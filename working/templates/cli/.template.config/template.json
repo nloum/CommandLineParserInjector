@@ -8,6 +8,8 @@
     "identity": "CommandLineParserInjector",
     "name": "Command line project with dependency injection",
     "shortName": "cli",
+    "sourceName": "CommandLineParserInjectorTemplate",
+    "preferNameDirectory": true,
     "tags": {
         "language": "C#",
         "type": "project"
@@ -49,17 +51,12 @@
         }
     },
     "symbols": {
-        "ApplicationName": {
-            "type": "parameter",
-            "defaultValue": "CommandLineApplication",
-            "isRequired": true,
-            "replaces": "CommandLineParserInjectorTemplate",
-            "fileRename": "CommandLineParserInjectorTemplate"
-        },
         "CommandLineVerbs": {
             "type": "parameter",
             "datatype": "choice",
-            "isRequired": true,
+            "defaultValue": "noverbs",
+            "longName": "logging",
+            "shortName": "l",
             "choices": [
                 {
                     "choice": "noverbs",
@@ -73,8 +70,8 @@
         },
         "LoggingFramework": {
             "type": "parameter",
-            "isRequired": true,
             "datatype": "choice",
+            "defaultValue": "microsoft",
             "choices": [
                 {
                     "choice": "serilog",
