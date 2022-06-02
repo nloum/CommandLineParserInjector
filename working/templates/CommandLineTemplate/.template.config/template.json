@@ -5,10 +5,10 @@
         "CommandLine",
         "Console"
     ],
-    "identity": "CommandLine",
+    "identity": "CommandLineTemplate",
     "name": "Command line project with dependency injection",
     "shortName": "cli",
-    "sourceName": "CommandLine",
+    "sourceName": "CommandLineTemplate",
     "preferNameDirectory": true,
     "tags": {
         "language": "C#",
@@ -16,7 +16,7 @@
     },
     "primaryOutputs": [
         {
-            "path": "CommandLine.csproj"
+            "path": "CommandLineTemplate.csproj"
         }
     ],
     "specialCustomOperations": {

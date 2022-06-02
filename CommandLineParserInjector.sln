@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.cspr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "templatepack", "working\templatepack.csproj", "{E81C192B-0C24-45F5-850C-F3E877A59699}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine", "working\templates\CommandLine\CommandLine.csproj", "{91AA2968-06F2-432C-8BFF-E06BCCF93730}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineTemplate", "working\templates\CommandLineTemplate\CommandLineTemplate.csproj", "{4AA03E2A-C238-43C1-87DA-5232EDF0F3E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,9 +30,9 @@ Global
 		{E81C192B-0C24-45F5-850C-F3E877A59699}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E81C192B-0C24-45F5-850C-F3E877A59699}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E81C192B-0C24-45F5-850C-F3E877A59699}.Release|Any CPU.Build.0 = Release|Any CPU
-		{91AA2968-06F2-432C-8BFF-E06BCCF93730}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{91AA2968-06F2-432C-8BFF-E06BCCF93730}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{91AA2968-06F2-432C-8BFF-E06BCCF93730}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{91AA2968-06F2-432C-8BFF-E06BCCF93730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AA03E2A-C238-43C1-87DA-5232EDF0F3E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AA03E2A-C238-43C1-87DA-5232EDF0F3E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AA03E2A-C238-43C1-87DA-5232EDF0F3E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AA03E2A-C238-43C1-87DA-5232EDF0F3E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
