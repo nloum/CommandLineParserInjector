@@ -91,7 +91,7 @@ public class SimpleCommandLineHandler : ICommandLineHandler<SimpleCommandLineOpt
 }
 
 [TestClass]
-public class UnitTest1
+public class ExampleTests
 {
     [TestMethod]
     public void SimpleCommandLineOptions_WithoutHandler_ShouldWork()
