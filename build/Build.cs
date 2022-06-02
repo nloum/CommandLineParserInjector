@@ -96,6 +96,7 @@ class Build : NukeBuild
             
             DotNetPack(s => s
                 .SetVersion(GitVersion.NuGetVersionV2)
+                .SetOutputDirectory(OutputDirectory)
                 .CombineWith(
                     from project in new[]{TemplateProject}
                     select new { project }, (cs, v) => cs
