@@ -5,10 +5,10 @@
         "CommandLine",
         "Console"
     ],
-    "identity": "CommandLineParserInjector",
+    "identity": "CommandLine",
     "name": "Command line project with dependency injection",
     "shortName": "cli",
-    "sourceName": "CommandLineParserInjectorTemplate",
+    "sourceName": "CommandLine",
     "preferNameDirectory": true,
     "tags": {
         "language": "C#",
