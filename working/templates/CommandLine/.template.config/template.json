@@ -14,6 +14,11 @@
         "language": "C#",
         "type": "project"
     },
+    "primaryOutputs": [
+        {
+            "path": "CommandLine.csproj"
+        }
+    ],
     "specialCustomOperations": {
         "**/*.json": {
             "operations": [
@@ -116,6 +121,13 @@
                 }
             ],
             "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+            "continueOnError": true
+        },
+        {
+            "description": "Add project to solution",
+            "manualInstructions": [],
+            "primaryOutputIndexes": "0",
+            "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
             "continueOnError": true
         }
     ]
