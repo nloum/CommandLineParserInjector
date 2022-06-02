@@ -94,10 +94,10 @@ public class SimpleCommandLineHandler : ICommandLineHandler<SimpleCommandLineOpt
 public class ExampleTests
 {
     [TestMethod]
-    public void SimpleCommandLineOptions_WithoutHandler_ShouldWork()
+    public async Task SimpleCommandLineOptions_WithoutHandler_ShouldWork()
     {
         var args = new[]{"-p", "test.txt"};
-        IHost host = Host.CreateDefaultBuilder(args)
+        IHost host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
                 services.AddCommandLineOptions<SimpleCommandLineOptions>(args);
@@ -115,6 +115,8 @@ public class ExampleTests
 
         var runner = host.Services.GetService<ICommandLineRunner>();
         runner.Should().BeNull();
+
+        await host.RunCommandLineAsync();
     }
     
     [TestMethod]
@@ -126,7 +128,7 @@ public class ExampleTests
             .Callback((string message) => messages.Add(message));
         
         var args = new[]{"-p", "test.txt"};
-        IHost host = Host.CreateDefaultBuilder(args)
+        IHost host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
                 services.AddCommandLineVerbBase<CustomVerbBase>();
@@ -147,7 +149,7 @@ public class ExampleTests
         var runner = host.Services.GetService<ICommandLineRunner>();
         runner.Should().NotBeNull();
 
-        await runner.RunAsync();
+        await host.RunCommandLineAsync();
 
         messages.Count.Should().Be(1);
         messages[0].Should().Be("test.txt");
@@ -162,7 +164,7 @@ public class ExampleTests
             .Callback((string message) => messages.Add(message));
         
         var args = new[]{"verb1", "-i", "test.txt"};
-        IHost host = Host.CreateDefaultBuilder(args)
+        IHost host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
                 services.AddCommandLineArguments(args);
@@ -189,7 +191,7 @@ public class ExampleTests
         var runner = host.Services.GetService<ICommandLineRunner>();
         runner.Should().NotBeNull();
 
-        await runner.RunAsync();
+        await host.RunCommandLineAsync();
 
         messages.Count.Should().Be(1);
         messages[0].Should().Be("test.txt");

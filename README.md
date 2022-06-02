@@ -3,11 +3,10 @@
 This library makes it easy to write C# command line apps that use dependency injection. To use it:
 
 1. Add a dependency on `CommandLineParserInjector`
-2. Add a dependency on `Microsoft.Extensions.Hosting`
-3. Put the following code in your `Program.cs` file:
+2. Put the following code in your `Program.cs` file:
 
 ```
-IHost host = Host.CreateDefaultBuilder(args)
+IHost host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
         services.AddCommandLineOptions<SimpleCommandLineOptions, SimpleCommandLineHandler>(args);
@@ -18,7 +17,7 @@ IHost host = Host.CreateDefaultBuilder(args)
 var runner = host.Services.GetService<ICommandLineRunner>();
 runner.Should().NotBeNull();
 
-await runner.RunAsync();
+await runner.RunCommandLineAsync();
 
 public class SimpleCommandLineOptions
 {
@@ -35,11 +34,11 @@ public class SimpleCommandLineHandler : ICommandLineHandler<SimpleCommandLineOpt
 }
 ```
 
-If you want your command line program to support multiple [verbs](https://github.com/commandlineparser/commandline/wiki/Verbs), you can do this:
+3. Or if you want your command line program to support multiple [verbs](https://github.com/commandlineparser/commandline/wiki/Verbs), you can do this:
 
 ```
 var args = new[]{"verb1", "-i", "test.txt"};
-IHost host = Host.CreateDefaultBuilder(args)
+IHost host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
         services.AddCommandLineArguments(args);
@@ -51,7 +50,7 @@ IHost host = Host.CreateDefaultBuilder(args)
 
 var runner = host.Services.GetRequiredService<ICommandLineRunner>();
 
-await runner.RunAsync();
+await hot.RunCommandLineAsync();
 
 [Verb("verb1")]
 public class CommandLineVerb1
