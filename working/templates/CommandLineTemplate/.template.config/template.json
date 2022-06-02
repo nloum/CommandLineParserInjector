@@ -6,7 +6,7 @@
         "Console"
     ],
     "identity": "CommandLineTemplate",
-    "name": "Command line project with dependency injection",
+    "name": "CommandLine",
     "shortName": "cli",
     "sourceName": "CommandLineTemplate",
     "preferNameDirectory": true,
