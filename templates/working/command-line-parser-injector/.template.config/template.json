@@ -1,0 +1,12 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "nloum",
+    "classifications": [ "CommandLine", "Console" ],
+    "identity": "CommandLineParserInjector",
+    "name": "Command line project with dependency injection",
+    "shortName": "cli-injection",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    }
+}
