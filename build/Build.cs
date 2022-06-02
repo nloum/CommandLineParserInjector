@@ -54,6 +54,7 @@ class Build : NukeBuild
             EnsureCleanDirectory(OutputDirectory);
 
             DotNetClean(_ => _
+                .SetConfiguration(Configuration)
                 .SetProject(Solution));
         });
 
