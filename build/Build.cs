@@ -43,9 +43,10 @@ class Build : NukeBuild
     Project[] PackageProjects => new[]
     {
         Solution.GetProject("CommandLineParserInjector"),
-        Solution.GetProject("templatepack"),
     };
-    
+
+    Project TemplateProject => Solution.GetProject("templatepack");
+
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
@@ -89,6 +90,14 @@ class Build : NukeBuild
                 .AddProperty("ContinuousIntegrationBuild", "true")
                 .CombineWith(
                     from project in PackageProjects
+                    select new { project }, (cs, v) => cs
+                        .SetProject(v.project))
+            );
+            
+            DotNetPack(s => s
+                .SetVersion(GitVersion.NuGetVersionV2)
+                .CombineWith(
+                    from project in new[]{TemplateProject}
                     select new { project }, (cs, v) => cs
                         .SetProject(v.project))
             );
