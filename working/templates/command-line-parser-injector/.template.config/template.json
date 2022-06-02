@@ -1,0 +1,106 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "nloum",
+    "classifications": [
+        "CommandLine",
+        "Console"
+    ],
+    "identity": "CommandLineParserInjector",
+    "name": "Command line project with dependency injection",
+    "shortName": "cli",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "specialCustomOperations": {
+        "**/*.json": {
+            "operations": [
+                {
+                    "configuration": {
+                        "actionableElse": [
+                            "//#else"
+                        ],
+                        "actionableElseif": [
+                            "//#elif"
+                        ],
+                        "actionableIf": [
+                            "//#if"
+                        ],
+                        "actions": [
+                            "pseudoComment"
+                        ],
+                        "endif": [
+                            "//#endif"
+                        ],
+                        "trim": "true",
+                        "wholeLine": "true"
+                    },
+                    "type": "conditional"
+                },
+                {
+                    "configuration": {
+                        "id": "pseudoComment",
+                        "original": "///",
+                        "replacement": ""
+                    },
+                    "type": "replacement"
+                }
+            ]
+        }
+    },
+    "symbols": {
+        "ApplicationName": {
+            "type": "parameter",
+            "defaultValue": "CommandLineApplication",
+            "isRequired": true,
+            "replaces": "CommandLineParserInjectorTemplate",
+            "fileRename": "CommandLineParserInjectorTemplate"
+        },
+        "CommandLineVerbs": {
+            "type": "parameter",
+            "datatype": "choice",
+            "isRequired": true,
+            "choices": [
+                {
+                    "choice": "noverbs",
+                    "description": "Single command"
+                },
+                {
+                    "choice": "verbs",
+                    "description": "Multiple command line verbs"
+                }
+            ]
+        },
+        "LoggingFramework": {
+            "type": "parameter",
+            "isRequired": true,
+            "datatype": "choice",
+            "choices": [
+                {
+                    "choice": "serilog",
+                    "description": "Serilog"
+                },
+                {
+                    "choice": "microsoft",
+                    "description": "Default (Microsoft)"
+                }
+            ]
+        },
+        "EnableSerilog": {
+            "type": "computed",
+            "value": "(LoggingFramework == \"serilog\")"
+        },
+        "EnableMicrosoftLogging": {
+            "type": "computed",
+            "value": "(LoggingFramework == \"microsoft\")"
+        },
+        "EnableCommandLineVerbs": {
+            "type": "computed",
+            "value": "(CommandLineVerbs == \"verbs\")"
+        },
+        "EnableSingleCommand": {
+            "type": "computed",
+            "value": "(CommandLineVerbs == \"noverbs\")"
+        }
+    }
+}

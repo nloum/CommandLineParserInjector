@@ -3,7 +3,8 @@
 This library makes it easy to write C# command line apps that use dependency injection. To use it:
 
 1. Add a dependency on `CommandLineParserInjector`
-2. Put the following code in your `Program.cs` file:
+2. Add a dependency on `Microsoft.Extensions.Hosting`
+3. Put the following code in your `Program.cs` file:
 
 ```
 IHost host = Host.CreateDefaultBuilder()
@@ -34,56 +35,51 @@ public class SimpleCommandLineHandler : ICommandLineHandler<SimpleCommandLineOpt
 }
 ```
 
-3. Or if you want your command line program to support multiple [verbs](https://github.com/commandlineparser/commandline/wiki/Verbs), you can do this:
+4. Or if you want your command line program to support multiple [verbs](https://github.com/commandlineparser/commandline/wiki/Verbs), you can do this:
 
 ```
-var args = new[]{"verb1", "-i", "test.txt"};
+using CommandLine;
+using CommandLineParserInjector;
+
 IHost host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
         services.AddCommandLineArguments(args);
-        services.AddCommandLineVerb<CommandLineVerb1, CommandLineHandler1>();
-        services.AddCommandLineVerb<CommandLineVerb2, CommandLineHandler2>();
-        services.AddSingleton(test.Object);
+        services.AddCommandLineVerb<AddVerb, AddHandler>();
+        services.AddCommandLineVerb<CompleteVerb, CompleteHandler>();
     })
     .Build();
 
-var runner = host.Services.GetRequiredService<ICommandLineRunner>();
+await host.RunCommandLineAsync();
 
-await hot.RunCommandLineAsync();
-
-[Verb("verb1")]
-public class CommandLineVerb1
+[Verb("add", HelpText = "Add a new TODO item")]
+public class AddVerb
 {
-    [Option('i', "input", HelpText = "A simple string property", Required = true)]
-    public string InputPath { get; set; }
-
-    public override string FilePath => InputPath;
+    [Option('t', "todo", HelpText = "The ID of the TODO", Required = true)]
+    public string TodoId { get; set; }
 }
 
-[Verb("verb2")]
-public class CommandLineVerb2
+[Verb("complete", HelpText = "Mark an existing TODO item as completed")]
+public class CompleteVerb
 {
-    [Option('o', "output", HelpText = "A simple string property", Required = true)]
-    public string OutputPath { get; set; }
-
-    public override string FilePath => OutputPath;
+    [Option('t', "todo", HelpText = "The ID of the TODO", Required = true)]
+    public string TodoId { get; set; }
 }
 
-public class CommandLineHandler1 : ICommandLineHandler<CommandLineVerb1>
+public class AddHandler : ICommandLineHandler<AddVerb>
 {
-    public Task ExecuteAsync(CommandLineVerb1 verb)
+    public Task ExecuteAsync(AddVerb verb)
     {
-        // TODO - put code to process a verb1 command here
+        // TODO - code to add a TODO item goes here
         return Task.CompletedTask;
     }
 }
 
-public class CommandLineHandler2 : ICommandLineHandler<CommandLineVerb2>
+public class CompleteHandler : ICommandLineHandler<CompleteVerb>
 {
-    public Task ExecuteAsync(CommandLineVerb2 verb)
+    public Task ExecuteAsync(CompleteVerb verb)
     {
-        // TODO - put code to process a verb2 command here
+        // TODO - code to mark a TODO item as complete goes here
         return Task.CompletedTask;
     }
 }

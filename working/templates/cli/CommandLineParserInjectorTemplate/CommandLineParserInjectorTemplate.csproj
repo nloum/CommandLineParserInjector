@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-CommandLineParserInjectorTemplate-2C9D9B2B-40B7-4210-82FA-E8E5E73507AB</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommandLineParserInjector" Version="1.0.0-alpha0009" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+<!--#if (EnableSerilog) -->
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
+<!--#endif -->
+    </ItemGroup>
+</Project>

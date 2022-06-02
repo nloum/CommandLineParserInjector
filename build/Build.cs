@@ -43,6 +43,7 @@ class Build : NukeBuild
     Project[] PackageProjects => new[]
     {
         Solution.GetProject("CommandLineParserInjector"),
+        Solution.GetProject("templatepack"),
     };
     
     Target Clean => _ => _
