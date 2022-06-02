@@ -28,7 +28,7 @@ class Build : NukeBuild
     public static int Main () => Execute<Build>(x => x.Compile);
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
-    readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    readonly Configuration Configuration = /*IsLocalBuild ? Configuration.Debug : */Configuration.Release;
 
     [Solution] readonly Solution Solution;
     [GitRepository] readonly GitRepository GitRepository;
@@ -42,15 +42,7 @@ class Build : NukeBuild
     
     Project[] PackageProjects => new[]
     {
-        Solution.GetProject("CodeIO"),
-        Solution.GetProject("IncrementalTypes"),
-        Solution.GetProject("FiniteStateMachine.Types"),
-        Solution.GetProject("FiniteStateMachine"),
-        Solution.GetProject("MoreEqualObjects"),
-        Solution.GetProject("SourceMacros"),
-        Solution.GetProject("SourceMacros.SourceGenerator"),
-        Solution.GetProject("MoreEqualObjects.Collections"),
-        Solution.GetProject("MoreEqualObjects.Types"),
+        Solution.GetProject("CommandLineParserInjector"),
     };
     
     Target Clean => _ => _
