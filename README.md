@@ -2,9 +2,15 @@
 
 This library makes it easy to write C# command line apps that use dependency injection. To use it:
 
+1. Install the template: `dotnet new --install CommandLineParserInjector.Template`
+2. Make a directory for your new project
+3. Inside the directory, run `dotnet new cli`
+
+## Adding to existing project
+
 1. Add a dependency on `CommandLineParserInjector`
 2. Add a dependency on `Microsoft.Extensions.Hosting`
-3. Put the following code in your `Program.cs` file:
+3. Use the following code as an example for your `Program.cs` file:
 
 ```
 IHost host = Host.CreateDefaultBuilder()
@@ -35,7 +41,7 @@ public class SimpleCommandLineHandler : ICommandLineHandler<SimpleCommandLineOpt
 }
 ```
 
-4. Or if you want your command line program to support multiple [verbs](https://github.com/commandlineparser/commandline/wiki/Verbs), you can do this:
+4. Or if you want your command line program to support multiple [verbs](https://github.com/commandlineparser/commandline/wiki/Verbs), you can do use this code:
 
 ```
 using CommandLine;

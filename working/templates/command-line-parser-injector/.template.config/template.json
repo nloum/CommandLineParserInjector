@@ -12,6 +12,8 @@
         "language": "C#",
         "type": "project"
     },
+    "sourceName": "CommandLineParserInjectorTemplate",
+    "preferNameDirectory" : true,
     "specialCustomOperations": {
         "**/*.json": {
             "operations": [
@@ -49,17 +51,10 @@
         }
     },
     "symbols": {
-        "ApplicationName": {
-            "type": "parameter",
-            "defaultValue": "CommandLineApplication",
-            "isRequired": true,
-            "replaces": "CommandLineParserInjectorTemplate",
-            "fileRename": "CommandLineParserInjectorTemplate"
-        },
         "CommandLineVerbs": {
             "type": "parameter",
             "datatype": "choice",
-            "isRequired": true,
+            "defaultValue": "noverbs",
             "choices": [
                 {
                     "choice": "noverbs",
@@ -73,7 +68,7 @@
         },
         "LoggingFramework": {
             "type": "parameter",
-            "isRequired": true,
+            "defaultValue": "microsoft",
             "datatype": "choice",
             "choices": [
                 {
