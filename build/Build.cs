@@ -52,6 +52,9 @@ class Build : NukeBuild
         .Executes(() =>
         {
             EnsureCleanDirectory(OutputDirectory);
+
+            DotNetClean(_ => _
+                .SetProject(Solution));
         });
 
     Target Restore => _ => _

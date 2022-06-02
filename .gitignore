@@ -1,5 +1,5 @@
-templates/test/**
-
+working/test/**
+.DS_Store
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,rider,csharp,dotnetcore
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,rider,csharp,dotnetcore
