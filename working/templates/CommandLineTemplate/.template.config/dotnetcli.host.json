@@ -34,8 +34,7 @@
             "shortName": "f"
         },
         "loggingFramework": {
-            "longName": "log",
-            "shortName": "l"
+            "shortName": "log"
         },
         "dotNetToolName": {
             "longName": "tool",
