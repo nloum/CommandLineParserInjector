@@ -44,14 +44,21 @@ try
 
 #if(!inlineHandlers)
     await host.RunCommandLineAsync();
-#else
-#if(enableCommand)
+#endif
+#if(inlineHandlers && enableCommand)
     var options = host.Services.GetRequiredService<SimpleCommandOptions>();
     // TODO - add code here
-#else
-    var options = host.Services.GetRequiredService<VerbBase>();
-    // TODO - add code here
 #endif
+#if(inlineHandlers && enableVerbs)
+    var verb = host.Services.GetRequiredService<VerbBase>();
+    if (verb is Verb1 verb1)
+    {
+        // TODO - add code here
+    }
+    else if (verb is Verb2 verb2)
+    {
+        // TODO - add code here
+    }
 #endif
 }
 catch (Exception ex)
@@ -86,5 +93,22 @@ IHost host = Host.CreateDefaultBuilder()
     })
     .Build();
 
+#if(!inlineHandlers)
 await host.RunCommandLineAsync();
+#endif
+#if(inlineHandlers && enableCommand)
+var options = host.Services.GetRequiredService<SimpleCommandOptions>();
+// TODO - add code here
+#endif
+#if(inlineHandlers && enableVerbs)
+var verb = host.Services.GetRequiredService<VerbBase>();
+if (verb is Verb1 verb1)
+{
+    // TODO - add code here
+}
+else if (verb is Verb2 verb2)
+{
+    // TODO - add code here
+}
+#endif
 #endif
