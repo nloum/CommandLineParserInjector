@@ -94,6 +94,12 @@
                 }
             ]
         },
+        "DotNetToolName": {
+            "type": "parameter",
+            "datatype": "text",
+            "defaultValue": "",
+            "replaces": "botsay"
+        },
         "EnableSerilog": {
             "type": "computed",
             "value": "(LoggingFramework == \"serilog\")"
@@ -109,6 +115,10 @@
         "EnableSingleCommand": {
             "type": "computed",
             "value": "(CommandLineVerbs == \"noverbs\")"
+        },
+        "EnableDotNetTool": {
+            "type": "computed",
+            "value": "(DotNetToolName != \"\")"
         }
     },
     "postActions": [
