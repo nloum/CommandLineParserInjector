@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
 <!--#if (EnablePublishSingleFile) -->
         <PublishSingleFile>true</PublishSingleFile>
+        <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
 <!--#endif -->
 <!--#if (EnablePublishTrimmed) -->
         <PublishTrimmed>true</PublishTrimmed>
