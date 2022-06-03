@@ -21,11 +21,11 @@
             "longName": "command",
             "shortName": "c"
         },
-        "verb1": {
+        "verb1Name": {
             "longName": "verb1",
             "shortName": "v1"
         },
-        "verb2": {
+        "verb2Name": {
             "longName": "verb2",
             "shortName": "v2"
         },
