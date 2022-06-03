@@ -1,8 +1,9 @@
 ﻿{
   "profiles": {
-    "CommandLineParserInjectorTemplate": {
+    "CommandLineParserInjectorTemplate add": {
       "commandName": "Project",
       "dotnetRunMessages": true,
+      "commandLineArgs": "add -p test.txt",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
       }
