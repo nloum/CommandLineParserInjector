@@ -1,3 +1,7 @@
+#if (!enableImplicitUsings)
+using System;
+using System.Threading.Tasks;
+#endif
 using CommandLine;
 using CommandLineParserInjector;
 
