@@ -168,8 +168,8 @@
         "verb1Name": {
             "type": "parameter",
             "datatype": "text",
-            "replaces": "Verb2",
-            "fileRename": "Verb2"
+            "replaces": "Verb1",
+            "fileRename": "Verb1"
         },
         "verb1NameLower": {
             "type": "generated",
