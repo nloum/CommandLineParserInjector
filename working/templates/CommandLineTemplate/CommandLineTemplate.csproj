@@ -23,7 +23,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommandLineParserInjector" Version="1.0.0-alpha0009" />
+        <ProjectReference Include="..\..\..\CommandLineParserInjector\CommandLineParserInjector.csproj" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 <!--#if (EnableSerilog) -->
         <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />

@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Net;
 using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.Execution;
@@ -97,6 +99,17 @@ class Build : NukeBuild
                     select new { project }, (cs, v) => cs
                         .SetProject(v.project))
             );
+
+            var originalTemplateProjectContents = File.ReadAllText(TemplateProject.Path);
+            var newTemplateProjectContents = originalTemplateProjectContents.Replace(
+                "<ProjectReference Include=\"..\\..\\..\\CommandLineParserInjector\\CommandLineParserInjector.csproj\" />", 
+                $"<PackageReference Include=\"CommandLineParserInjector\" Version=\"{GitVersion.NuGetVersionV2}\" />");
+            if (newTemplateProjectContents == originalTemplateProjectContents)
+            {
+                throw new InvalidOperationException(
+                    "The project reference was not successfully replaced with a package reference");
+            }
+            File.WriteAllText(TemplateProject.Path, newTemplateProjectContents);
             
             DotNetPack(s => s
                 .SetVersion(GitVersion.NuGetVersionV2)
