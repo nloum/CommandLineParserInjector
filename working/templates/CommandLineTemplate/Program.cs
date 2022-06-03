@@ -2,7 +2,6 @@
 using System;
 using Microsoft.Extensions.Hosting;
 #endif
-using CommandLine;
 using CommandLineParserInjector;
 using CommandLineTemplate;
 #if (inlineHandlers)
