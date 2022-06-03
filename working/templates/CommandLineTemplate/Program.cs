@@ -1,6 +1,5 @@
 #if (!enableImplicitUsings)
 using System;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 #endif
 using CommandLine;
@@ -23,10 +22,10 @@ try
             .ReadFrom.Services(services))
         .ConfigureServices(services =>
         {
-#if (enableSingleCommand)
+#if (enableCommand)
             services.AddCommandLineOptions<SimpleCommandOptions, SimpleCommandHandler>(args);
 #endif
-#if (enableCommandLineVerbs)
+#if (enableVerbs)
             services.AddCommandLineArguments(args);
             services.AddCommandLineVerb<Verb1Verb, Verb1Handler>();
             services.AddCommandLineVerb<Verb2Verb, Verb2Handler>();
@@ -48,10 +47,10 @@ finally
 IHost host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
-#if (enableSingleCommand)
+#if (enableCommand)
         services.AddCommandLineOptions<SimpleOptions, SimpleHandler>(args);
 #endif
-#if (enableCommandLineVerbs)
+#if (enableVerbs)
         services.AddCommandLineArguments(args);
         services.AddCommandLineVerb<Verb1Verb, Verb1Handler>();
         services.AddCommandLineVerb<Verb2Verb, Verb2Handler>();

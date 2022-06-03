@@ -1,0 +1,49 @@
+{
+    "$schema": "http://json.schemastore.org/dotnetcli.host",
+    "symbolInfo": {
+        "commandLineMode": {
+            "longName": "mode",
+            "shortName": "m"
+        },
+        "skipRestore": {
+            "shortName": "s"
+        },
+        "runtimeIdentifier": {
+            "shortName": "r"
+        },
+        "enablePublishSingleFile": {
+            "shortName": "psf"
+        },
+        "enablePublishTrimmed": {
+            "shortName": "pt"
+        },
+        "simpleCommand": {
+            "longName": "command",
+            "shortName": "c"
+        },
+        "verb1": {
+            "longName": "verb1",
+            "shortName": "v1"
+        },
+        "verb2": {
+            "longName": "verb2",
+            "shortName": "v2"
+        },
+        "targetFramework": {
+            "longName": "framework",
+            "shortName": "f"
+        },
+        "loggingFramework": {
+            "longName": "log",
+            "shortName": "l"
+        },
+        "dotNetToolName": {
+            "longName": "tool",
+            "shortName": "t"
+        },
+        "enableImplicitUsings": {
+            "longName": "implicitUsings",
+            "shortName": "iu"
+        }
+    }
+}

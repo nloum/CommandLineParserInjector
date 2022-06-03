@@ -56,13 +56,13 @@
         }
     },
     "symbols": {
-        "commandLineVerbs": {
+        "commandLineMode": {
             "type": "parameter",
             "datatype": "choice",
             "defaultValue": "noverbs",
             "choices": [
                 {
-                    "choice": "noverbs",
+                    "choice": "command",
                     "description": "Single command"
                 },
                 {
@@ -70,6 +70,14 @@
                     "description": "Multiple command line verbs"
                 }
             ]
+        },
+        "enableVerbs": {
+            "type": "computed",
+            "value": "(CommandLineVerbs == \"verbs\")"
+        },
+        "enableCommand": {
+            "type": "computed",
+            "value": "(CommandLineVerbs == \"command\")"
         },
         "skipRestore": {
             "type": "parameter",
@@ -203,14 +211,6 @@
             "type": "computed",
             "value": "(LoggingFramework == \"microsoft\")"
         },
-        "enableCommandLineVerbs": {
-            "type": "computed",
-            "value": "(CommandLineVerbs == \"verbs\")"
-        },
-        "enableSingleCommand": {
-            "type": "computed",
-            "value": "(CommandLineVerbs == \"noverbs\")"
-        },
         "enableDotNetTool": {
             "type": "computed",
             "value": "(DotNetToolName != \"\")"
@@ -240,13 +240,13 @@
         {
             "modifiers": [
                 {
-                    "condition": "(enableSingleCommand)",
+                    "condition": "(!enableCommand)",
                     "exclude": [
                         "SimpleHandler.cs"
                     ]
                 },
                 {
-                    "condition": "(enableCommandLineVerbs)",
+                    "condition": "(!enableVerbs)",
                     "exclude": [
                         "Verb1Handler.cs",
                         "Verb2Handler.cs"
