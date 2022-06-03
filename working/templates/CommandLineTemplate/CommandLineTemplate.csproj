@@ -3,20 +3,20 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
-<!--#if (EnablePublishSingleFile) -->
+<!--#if (enablePublishSingleFile) -->
         <PublishSingleFile>true</PublishSingleFile>
         <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
 <!--#endif -->
-<!--#if (EnablePublishTrimmed) -->
+<!--#if (enablePublishTrimmed) -->
         <PublishTrimmed>true</PublishTrimmed>
 <!--#endif -->
-<!--#if (EnableRuntimeIdentifier) -->
+<!--#if (enableRuntimeIdentifier) -->
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
 <!--#endif -->
-<!--#if (EnableImplicitUsings) -->
+<!--#if (enableImplicitUsings) -->
         <ImplicitUsings>enable</ImplicitUsings>
 <!--#endif -->
-<!--#if (EnableDotNetTool) -->
+<!--#if (enableDotNetTool) -->
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>botsay</ToolCommandName>
 <!--#endif -->
@@ -25,7 +25,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\..\CommandLineParserInjector\CommandLineParserInjector.csproj" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-<!--#if (EnableSerilog) -->
+<!--#if (enableSerilog) -->
         <PackageReference Include="Serilog.Extensions.Hosting" Version="4.2.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />

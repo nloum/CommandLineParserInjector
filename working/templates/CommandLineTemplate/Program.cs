@@ -1,4 +1,4 @@
-#if (!EnableImplicitUsings)
+#if (!enableImplicitUsings)
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
@@ -7,7 +7,7 @@ using CommandLine;
 using CommandLineParserInjector;
 using CommandLineTemplate;
 
-#if(EnableSerilog)
+#if(enableSerilog)
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -23,10 +23,10 @@ try
             .ReadFrom.Services(services))
         .ConfigureServices(services =>
         {
-#if (EnableSingleCommand)
+#if (enableSingleCommand)
             services.AddCommandLineOptions<SimpleCommandOptions, SimpleCommandHandler>(args);
 #endif
-#if (EnableCommandLineVerbs)
+#if (enableCommandLineVerbs)
             services.AddCommandLineArguments(args);
             services.AddCommandLineVerb<Verb1Verb, Verb1Handler>();
             services.AddCommandLineVerb<Verb2Verb, Verb2Handler>();
@@ -48,10 +48,10 @@ finally
 IHost host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
-#if (EnableSingleCommand)
+#if (enableSingleCommand)
         services.AddCommandLineOptions<SimpleOptions, SimpleHandler>(args);
 #endif
-#if (EnableCommandLineVerbs)
+#if (enableCommandLineVerbs)
         services.AddCommandLineArguments(args);
         services.AddCommandLineVerb<Verb1Verb, Verb1Handler>();
         services.AddCommandLineVerb<Verb2Verb, Verb2Handler>();

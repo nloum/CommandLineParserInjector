@@ -56,7 +56,7 @@
         }
     },
     "symbols": {
-        "CommandLineVerbs": {
+        "commandLineVerbs": {
             "type": "parameter",
             "datatype": "choice",
             "defaultValue": "noverbs",
@@ -77,22 +77,22 @@
             "description": "If specified, skips the automatic restore of the project on create.",
             "defaultValue": "false"
         },
-        "RuntimeIdentifier": {
+        "runtimeIdentifier": {
             "type": "parameter",
             "datatype": "text",
             "defaultValue": "",
             "replaces": "win-x64"
         },
-        "EnableRuntimeIdentifier": {
+        "enableRuntimeIdentifier": {
             "type": "computed",
             "value": "(RuntimeIdentifier != \"\")"
         },
-        "EnablePublishSingleFile": {
+        "enablePublishSingleFile": {
             "type": "parameter",
             "datatype": "bool",
             "defaultValue": "false"
         },
-        "EnablePublishTrimmed": {
+        "enablePublishTrimmed": {
             "type": "parameter",
             "datatype": "bool",
             "defaultValue": "false"
@@ -144,7 +144,7 @@
             },
             "replaces": "sculpt"
         },
-        "TargetFramework": {
+        "targetFramework": {
             "type": "parameter",
             "datatype": "choice",
             "defaultValue": "net6.0",
@@ -168,7 +168,7 @@
                 }
             ]
         },
-        "LoggingFramework": {
+        "loggingFramework": {
             "type": "parameter",
             "datatype": "choice",
             "defaultValue": "microsoft",
@@ -183,34 +183,34 @@
                 }
             ]
         },
-        "DotNetToolName": {
+        "dotNetToolName": {
             "type": "parameter",
             "datatype": "text",
             "defaultValue": "",
             "replaces": "botsay"
         },
-        "EnableImplicitUsings": {
+        "enableImplicitUsings": {
             "type": "parameter",
             "datatype": "bool",
             "defaultValue": "true"
         },
-        "EnableSerilog": {
+        "enableSerilog": {
             "type": "computed",
             "value": "(LoggingFramework == \"serilog\")"
         },
-        "EnableMicrosoftLogging": {
+        "enableMicrosoftLogging": {
             "type": "computed",
             "value": "(LoggingFramework == \"microsoft\")"
         },
-        "EnableCommandLineVerbs": {
+        "enableCommandLineVerbs": {
             "type": "computed",
             "value": "(CommandLineVerbs == \"verbs\")"
         },
-        "EnableSingleCommand": {
+        "enableSingleCommand": {
             "type": "computed",
             "value": "(CommandLineVerbs == \"noverbs\")"
         },
-        "EnableDotNetTool": {
+        "enableDotNetTool": {
             "type": "computed",
             "value": "(DotNetToolName != \"\")"
         }
@@ -239,13 +239,13 @@
         {
             "modifiers": [
                 {
-                    "condition": "(!EnableSingleCommand)",
+                    "condition": "(!enableSingleCommand)",
                     "exclude": [
                         "SimpleHandler.cs"
                     ]
                 },
                 {
-                    "condition": "(!EnableCommandLineVerbs)",
+                    "condition": "(!enableCommandLineVerbs)",
                     "exclude": [
                         "Verb1Handler.cs",
                         "Verb2Handler.cs"
