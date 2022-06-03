@@ -6,7 +6,7 @@
         "Console"
     ],
     "identity": "CommandLineTemplate",
-    "name": "CommandLine",
+    "name": "Command Line Application",
     "shortName": "cli",
     "sourceName": "CommandLineTemplate",
     "preferNameDirectory": true,
