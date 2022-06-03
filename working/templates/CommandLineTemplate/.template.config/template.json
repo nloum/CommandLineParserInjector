@@ -79,6 +79,50 @@
             "description": "If specified, skips the automatic restore of the project on create.",
             "defaultValue": "false"
         },
+        "RuntimeIdentifier": {
+            "type": "parameter",
+            "datatype": "text",
+            "defaultValue": "",
+            "replaces": "win-x64"
+        },
+        "EnableRuntimeIdentifier": {
+            "type": "computed",
+            "value": "(RuntimeIdentifier != \"\")"
+        },
+        "EnablePublishSingleFile": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false"
+        },
+        "EnablePublishTrimmed": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false"
+        },
+        "TargetFramework": {
+            "type": "parameter",
+            "datatype": "choice",
+            "defaultValue": "microsoft",
+            "replaces": "net6.0",
+            "choices": [
+                {
+                    "choice": "net6.0",
+                    "description": "net6.0"
+                },
+                {
+                    "choice": "net5.0",
+                    "description": "net5.0"
+                },
+                {
+                    "choice": "netcoreapp3.0",
+                    "description": "netcoreapp3.0"
+                },
+                {
+                    "choice": "net3.1",
+                    "description": "net3.1"
+                }
+            ]
+        },
         "LoggingFramework": {
             "type": "parameter",
             "datatype": "choice",

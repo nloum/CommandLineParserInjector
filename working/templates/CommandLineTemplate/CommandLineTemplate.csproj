@@ -3,8 +3,17 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
+<!--#if (EnablePublishSingleFile) -->
+        <PublishSingleFile>true</PublishSingleFile>
+<!--#endif -->
+<!--#if (EnablePublishTrimmed) -->
+        <PublishTrimmed>true</PublishTrimmed>
+<!--#endif -->
+<!--#if (EnableRuntimeIdentifier) -->
+        <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+<!--#endif -->
 <!--#if (EnableImplicitUsings) -->
-<!--        <ImplicitUsings>enable</ImplicitUsings>-->
+        <ImplicitUsings>enable</ImplicitUsings>
 <!--#endif -->
 <!--#if (EnableDotNetTool) -->
         <PackAsTool>true</PackAsTool>
