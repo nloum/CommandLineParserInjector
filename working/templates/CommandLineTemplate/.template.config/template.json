@@ -245,13 +245,13 @@
         {
             "modifiers": [
                 {
-                    "condition": "(!enableCommand && !inlineHandlers)",
+                    "condition": "(!enableCommand || inlineHandlers)",
                     "exclude": [
                         "SimpleHandler.cs"
                     ]
                 },
                 {
-                    "condition": "(!enableVerbs && !inlineHandlers)",
+                    "condition": "(!enableVerbs || inlineHandlers)",
                     "exclude": [
                         "Verb1Handler.cs",
                         "Verb2Handler.cs"
