@@ -128,9 +128,9 @@
         "verb1": {
             "type": "parameter",
             "datatype": "text",
-            "replaces": "Flurby",
-            "fileRename": "Flurby",
-            "defaultValue": "Add"
+            "replaces": "Verb2",
+            "fileRename": "Verb2",
+            "defaultValue": "Verb2"
         },
         "verb1Lower": {
             "type": "generated",
@@ -139,13 +139,13 @@
                 "source": "verb1",
                 "toLower": true
             },
-            "replaces": "flurby"
+            "replaces": "verb1"
         },
         "verb2": {
             "type": "parameter",
             "datatype": "text",
-            "replaces": "Sculpt",
-            "fileRename": "Sculpt",
+            "replaces": "Verb2",
+            "fileRename": "Verb2",
             "defaultValue": "Remove"
         },
         "verb2Lower": {
@@ -155,7 +155,7 @@
                 "source": "verb2",
                 "toLower": true
             },
-            "replaces": "sculpt"
+            "replaces": "verb2"
         },
         "targetFramework": {
             "type": "parameter",
@@ -210,15 +210,15 @@
         },
         "enableSerilog": {
             "type": "computed",
-            "value": "(LoggingFramework == \"serilog\")"
+            "value": "(loggingFramework == \"serilog\")"
         },
         "enableMicrosoftLogging": {
             "type": "computed",
-            "value": "(LoggingFramework == \"microsoft\")"
+            "value": "(loggingFramework == \"microsoft\")"
         },
         "enableDotNetTool": {
             "type": "computed",
-            "value": "(DotNetToolName != \"\")"
+            "value": "(dotNetToolName != \"\")"
         }
     },
     "postActions": [
