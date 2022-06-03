@@ -73,11 +73,11 @@
         },
         "enableVerbs": {
             "type": "computed",
-            "value": "(CommandLineVerbs == \"verbs\")"
+            "value": "(commandLineMode == \"verbs\")"
         },
         "enableCommand": {
             "type": "computed",
-            "value": "(CommandLineVerbs == \"command\")"
+            "value": "(commandLineMode == \"command\")"
         },
         "inlineHandlers": {
             "type": "parameter",
