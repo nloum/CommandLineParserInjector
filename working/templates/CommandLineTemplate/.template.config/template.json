@@ -113,17 +113,20 @@
             "type": "computed",
             "value": "(commandLineMode == \"command\")"
         },
+
         "inlineHandlers": {
             "type": "parameter",
             "datatype": "bool",
             "defaultValue": "false"
         },
+
         "skipRestore": {
             "type": "parameter",
             "datatype": "bool",
             "description": "If specified, skips the automatic restore of the project on create.",
             "defaultValue": "false"
         },
+
         "runtimeIdentifier": {
             "type": "parameter",
             "datatype": "text",
@@ -132,8 +135,9 @@
         },
         "enableRuntimeIdentifier": {
             "type": "computed",
-            "value": "(RuntimeIdentifier != \"\")"
+            "value": "(runtimeIdentifier != \"\")"
         },
+
         "enablePublishSingleFile": {
             "type": "parameter",
             "datatype": "bool",
@@ -144,6 +148,7 @@
             "datatype": "bool",
             "defaultValue": "false"
         },
+
         "simpleCommand": {
             "type": "parameter",
             "datatype": "text",
@@ -159,38 +164,39 @@
             },
             "replaces": "simple"
         },
-        "verb1": {
+
+        "verb1Name": {
             "type": "parameter",
             "datatype": "text",
             "replaces": "Verb2",
-            "fileRename": "Verb2",
-            "defaultValue": "Verb2"
+            "fileRename": "Verb2"
         },
-        "verb1Lower": {
+        "verb1NameLower": {
             "type": "generated",
             "generator": "casing",
             "parameters": {
-                "source": "verb1",
+                "source": "verb1Name",
                 "toLower": true
             },
             "replaces": "verb1"
         },
-        "verb2": {
+
+        "verb2Name": {
             "type": "parameter",
             "datatype": "text",
             "replaces": "Verb2",
-            "fileRename": "Verb2",
-            "defaultValue": "Verb2"
+            "fileRename": "Verb2"
         },
-        "verb2Lower": {
+        "verb2NameLower": {
             "type": "generated",
             "generator": "casing",
             "parameters": {
-                "source": "verb2",
+                "source": "verb2Name",
                 "toLower": true
             },
             "replaces": "verb2"
         },
+
         "targetFramework": {
             "type": "parameter",
             "datatype": "choice",
@@ -216,6 +222,7 @@
                 }
             ]
         },
+
         "loggingFramework": {
             "type": "parameter",
             "datatype": "choice",
@@ -231,17 +238,6 @@
                 }
             ]
         },
-        "dotNetToolName": {
-            "type": "parameter",
-            "datatype": "text",
-            "defaultValue": "",
-            "replaces": "botsay"
-        },
-        "enableImplicitUsings": {
-            "type": "parameter",
-            "datatype": "bool",
-            "defaultValue": "true"
-        },
         "enableSerilog": {
             "type": "computed",
             "value": "(loggingFramework == \"serilog\")"
@@ -250,9 +246,22 @@
             "type": "computed",
             "value": "(loggingFramework == \"microsoft\")"
         },
+
+        "dotNetToolName": {
+            "type": "parameter",
+            "datatype": "text",
+            "defaultValue": "",
+            "replaces": "botsay"
+        },
         "enableDotNetTool": {
             "type": "computed",
             "value": "(dotNetToolName != \"\")"
+        },
+
+        "enableImplicitUsings": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "true"
         }
     },
     "postActions": [
