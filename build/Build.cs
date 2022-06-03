@@ -101,23 +101,21 @@ class Build : NukeBuild
                         .SetProject(v.project))
             );
 
-            var originalTemplateProjectContents = File.ReadAllText(RootDirectory / "working/templates/CommandLineTemplate/CommandLineTemplate.csproj");
-            var regex = new Regex("<ProjectReference.+/>");
-            var newTemplateProjectContents = regex.Replace(originalTemplateProjectContents,
-                $"<PackageReference Include=\"CommandLineParserInjector\" Version=\"{GitVersion.NuGetVersionV2}\" />");
-            // var newTemplateProjectContents = originalTemplateProjectContents.Replace(
-            //     "<ProjectReference Include=\"..\\..\\..\\CommandLineParserInjector\\CommandLineParserInjector.csproj\" />", 
+            // TODO - find out how to make the template depend on the latest version of the library
+            // var originalTemplateProjectContents = File.ReadAllText(RootDirectory / "working/templates/CommandLineTemplate/CommandLineTemplate.csproj");
+            // var regex = new Regex("<ProjectReference.+/>");
+            // var newTemplateProjectContents = regex.Replace(originalTemplateProjectContents,
             //     $"<PackageReference Include=\"CommandLineParserInjector\" Version=\"{GitVersion.NuGetVersionV2}\" />");
-            if (newTemplateProjectContents == originalTemplateProjectContents)
-            {
-                throw new InvalidOperationException(
-                    $"The project reference was not successfully replaced with a package reference: \"{originalTemplateProjectContents}\"");
-            }
-            File.WriteAllText(TemplateProject.Path, newTemplateProjectContents);
+            // if (newTemplateProjectContents == originalTemplateProjectContents)
+            // {
+            //     throw new InvalidOperationException(
+            //         $"The project reference was not successfully replaced with a package reference: \"{originalTemplateProjectContents}\"");
+            // }
+            // File.WriteAllText(TemplateProject.Path, newTemplateProjectContents);
             
             DotNetPack(s => s
                 .SetVersion(GitVersion.NuGetVersionV2)
-                .EnableNoRestore()
+                //.EnableNoRestore()
                 .SetOutputDirectory(OutputDirectory)
                 .CombineWith(
                     from project in new[]{TemplateProject}
