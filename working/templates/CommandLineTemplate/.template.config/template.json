@@ -60,8 +60,6 @@
             "type": "parameter",
             "datatype": "choice",
             "defaultValue": "noverbs",
-            "longName": "logging",
-            "shortName": "l",
             "choices": [
                 {
                     "choice": "noverbs",
@@ -134,7 +132,7 @@
                 },
                 {
                     "choice": "microsoft",
-                    "description": "Default (Microsoft)"
+                    "description": "Microsoft"
                 }
             ]
         },
