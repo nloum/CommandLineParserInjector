@@ -53,6 +53,40 @@
                     "type": "replacement"
                 }
             ]
+        },
+        "*.json": {
+            "operations": [
+                {
+                    "configuration": {
+                        "actionableElse": [
+                            "//#else"
+                        ],
+                        "actionableElseif": [
+                            "//#elif"
+                        ],
+                        "actionableIf": [
+                            "//#if"
+                        ],
+                        "actions": [
+                            "pseudoComment"
+                        ],
+                        "endif": [
+                            "//#endif"
+                        ],
+                        "trim": "true",
+                        "wholeLine": "true"
+                    },
+                    "type": "conditional"
+                },
+                {
+                    "configuration": {
+                        "id": "pseudoComment",
+                        "original": "///",
+                        "replacement": ""
+                    },
+                    "type": "replacement"
+                }
+            ]
         }
     },
     "symbols": {
@@ -146,7 +180,7 @@
             "datatype": "text",
             "replaces": "Verb2",
             "fileRename": "Verb2",
-            "defaultValue": "Remove"
+            "defaultValue": "Verb2"
         },
         "verb2Lower": {
             "type": "generated",

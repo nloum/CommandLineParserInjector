@@ -1,5 +1,5 @@
 ﻿{
-  //#if(enableCommandLineVerbs)
+  //#if(enableVerbs)
   "profiles": {
     "CommandLineParserInjectorTemplate verb1": {
       "commandName": "Project",
@@ -19,7 +19,7 @@
     }
   }
   //#endif
-  //#if(enableSingleCommand)
+  //#if(enableCommand)
   "profiles": {
     "CommandLineParserInjectorTemplate": {
       "commandName": "Project",
