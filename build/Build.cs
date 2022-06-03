@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.Execution;
@@ -101,9 +102,12 @@ class Build : NukeBuild
             );
 
             var originalTemplateProjectContents = File.ReadAllText(TemplateProject.Path);
-            var newTemplateProjectContents = originalTemplateProjectContents.Replace(
-                "<ProjectReference Include=\"..\\..\\..\\CommandLineParserInjector\\CommandLineParserInjector.csproj\" />", 
+            var regex = new Regex("<ProjectReference.+/>");
+            var newTemplateProjectContents = regex.Replace(originalTemplateProjectContents,
                 $"<PackageReference Include=\"CommandLineParserInjector\" Version=\"{GitVersion.NuGetVersionV2}\" />");
+            // var newTemplateProjectContents = originalTemplateProjectContents.Replace(
+            //     "<ProjectReference Include=\"..\\..\\..\\CommandLineParserInjector\\CommandLineParserInjector.csproj\" />", 
+            //     $"<PackageReference Include=\"CommandLineParserInjector\" Version=\"{GitVersion.NuGetVersionV2}\" />");
             if (newTemplateProjectContents == originalTemplateProjectContents)
             {
                 throw new InvalidOperationException(
