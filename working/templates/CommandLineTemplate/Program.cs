@@ -5,6 +5,9 @@ using Microsoft.Extensions.Hosting;
 using CommandLine;
 using CommandLineParserInjector;
 using CommandLineTemplate;
+#if (inlineHandlers)
+using Microsoft.Extensions.DependencyInjection;
+#endif
 
 #if(enableSerilog)
 using Serilog;
@@ -51,11 +54,11 @@ try
 #endif
 #if(inlineHandlers && enableVerbs)
     var verb = host.Services.GetRequiredService<VerbBase>();
-    if (verb is Verb1 verb1)
+    if (verb is Verb1Verb verb1)
     {
         // TODO - add code here
     }
-    else if (verb is Verb2 verb2)
+    else if (verb is Verb2Verb verb2)
     {
         // TODO - add code here
     }
@@ -102,11 +105,11 @@ var options = host.Services.GetRequiredService<SimpleCommandOptions>();
 #endif
 #if(inlineHandlers && enableVerbs)
 var verb = host.Services.GetRequiredService<VerbBase>();
-if (verb is Verb1 verb1)
+if (verb is Verb1Verb verb1)
 {
     // TODO - add code here
 }
-else if (verb is Verb2 verb2)
+else if (verb is Verb2Verb verb2)
 {
     // TODO - add code here
 }
