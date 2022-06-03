@@ -117,6 +117,7 @@ class Build : NukeBuild
             
             DotNetPack(s => s
                 .SetVersion(GitVersion.NuGetVersionV2)
+                .EnableNoRestore()
                 .SetOutputDirectory(OutputDirectory)
                 .CombineWith(
                     from project in new[]{TemplateProject}
