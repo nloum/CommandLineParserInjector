@@ -101,7 +101,7 @@ class Build : NukeBuild
                         .SetProject(v.project))
             );
 
-            var originalTemplateProjectContents = File.ReadAllText(TemplateProject.Path);
+            var originalTemplateProjectContents = File.ReadAllText(RootDirectory / "working/templates/CommandLineTemplate/CommandLineTemplate.csproj");
             var regex = new Regex("<ProjectReference.+/>");
             var newTemplateProjectContents = regex.Replace(originalTemplateProjectContents,
                 $"<PackageReference Include=\"CommandLineParserInjector\" Version=\"{GitVersion.NuGetVersionV2}\" />");
@@ -111,7 +111,7 @@ class Build : NukeBuild
             if (newTemplateProjectContents == originalTemplateProjectContents)
             {
                 throw new InvalidOperationException(
-                    "The project reference was not successfully replaced with a package reference");
+                    $"The project reference was not successfully replaced with a package reference: \"{originalTemplateProjectContents}\"");
             }
             File.WriteAllText(TemplateProject.Path, newTemplateProjectContents);
             
