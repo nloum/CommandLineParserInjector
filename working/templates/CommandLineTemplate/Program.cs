@@ -22,18 +22,37 @@ try
             .ReadFrom.Services(services))
         .ConfigureServices(services =>
         {
-#if (enableCommand)
+#if (enableCommand && !inlineHandlers)
             services.AddCommandLineOptions<SimpleCommandOptions, SimpleCommandHandler>(args);
 #endif
-#if (enableVerbs)
+#if (enableCommand && inlineHandlers)
+            services.AddCommandLineOptions<SimpleCommandOptions>(args);
+#endif
+#if (enableVerbs && !inlineHandlers)
             services.AddCommandLineArguments(args);
             services.AddCommandLineVerb<Verb1Verb, Verb1Handler>();
             services.AddCommandLineVerb<Verb2Verb, Verb2Handler>();
 #endif
+#if (enableVerbs && inlineHandlers)
+            services.AddCommandLineArguments(args);
+            services.AddCommandLineVerbBase<VerbBase>();
+            services.AddCommandLineVerb<Verb1Verb>();
+            services.AddCommandLineVerb<Verb2Verb>();
+#endif
         })
         .Build();
 
+#if(!inlineHandlers)
     await host.RunCommandLineAsync();
+#else
+#if(enableCommand)
+    var options = host.Services.GetRequiredService<SimpleCommandOptions>();
+    // TODO - add code here
+#else
+    var options = host.Services.GetRequiredService<VerbBase>();
+    // TODO - add code here
+#endif
+#endif
 }
 catch (Exception ex)
 {
@@ -47,13 +66,22 @@ finally
 IHost host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
-#if (enableCommand)
-        services.AddCommandLineOptions<SimpleOptions, SimpleHandler>(args);
+#if (enableCommand && !inlineHandlers)
+        services.AddCommandLineOptions<SimpleCommandOptions, SimpleCommandHandler>(args);
 #endif
-#if (enableVerbs)
+#if (enableCommand && inlineHandlers)
+        services.AddCommandLineOptions<SimpleCommandOptions>(args);
+#endif
+#if (enableVerbs && !inlineHandlers)
         services.AddCommandLineArguments(args);
         services.AddCommandLineVerb<Verb1Verb, Verb1Handler>();
         services.AddCommandLineVerb<Verb2Verb, Verb2Handler>();
+#endif
+#if (enableVerbs && inlineHandlers)
+        services.AddCommandLineArguments(args);
+        services.AddCommandLineVerbBase<VerbBase>();
+        services.AddCommandLineVerb<Verb1Verb>();
+        services.AddCommandLineVerb<Verb2Verb>();
 #endif
     })
     .Build();

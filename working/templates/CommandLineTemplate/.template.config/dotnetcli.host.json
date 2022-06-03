@@ -43,6 +43,10 @@
         "enableImplicitUsings": {
             "longName": "implicitUsings",
             "shortName": "iu"
+        },
+        "inlineHandlers": {
+            "longName": "inlineHandlers",
+            "shortName": "ih"
         }
     }
 }

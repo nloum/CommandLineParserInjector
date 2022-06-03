@@ -79,6 +79,11 @@
             "type": "computed",
             "value": "(CommandLineVerbs == \"command\")"
         },
+        "inlineHandlers": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false"
+        },
         "skipRestore": {
             "type": "parameter",
             "datatype": "bool",
@@ -240,16 +245,35 @@
         {
             "modifiers": [
                 {
-                    "condition": "(!enableCommand)",
+                    "condition": "(!enableCommand && !inlineHandlers)",
                     "exclude": [
                         "SimpleHandler.cs"
                     ]
                 },
                 {
-                    "condition": "(!enableVerbs)",
+                    "condition": "(!enableVerbs && !inlineHandlers)",
                     "exclude": [
                         "Verb1Handler.cs",
                         "Verb2Handler.cs"
+                    ]
+                },
+                {
+                    "condition": "(!enableCommand)",
+                    "exclude": [
+                        "SimpleOptions.cs"
+                    ]
+                },
+                {
+                    "condition": "(!enableVerbs)",
+                    "exclude": [
+                        "Verb1Verb.cs",
+                        "Verb2Verb.cs"
+                    ]
+                },
+                {
+                    "condition": "(!enableVerbs || !inlineHandlers)",
+                    "exclude": [
+                        "VerbBase.cs"
                     ]
                 }
             ]
