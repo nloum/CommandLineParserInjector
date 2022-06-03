@@ -102,7 +102,7 @@
         "TargetFramework": {
             "type": "parameter",
             "datatype": "choice",
-            "defaultValue": "microsoft",
+            "defaultValue": "net6.0",
             "replaces": "net6.0",
             "choices": [
                 {
