@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 #endif
 using CommandLine;
 using CommandLineParserInjector;
+using CommandLineTemplate;
 
 #if(EnableSerilog)
 using Serilog;
@@ -23,12 +24,12 @@ try
         .ConfigureServices(services =>
         {
 #if (EnableSingleCommand)
-            services.AddCommandLineOptions<SimpleCommandLineOptions, SimpleCommandLineHandler>(args);
+            services.AddCommandLineOptions<SimpleCommandOptions, SimpleCommandHandler>(args);
 #endif
 #if (EnableCommandLineVerbs)
             services.AddCommandLineArguments(args);
-            services.AddCommandLineVerb<AddVerb, AddHandler>();
-            services.AddCommandLineVerb<CompleteVerb, CompleteHandler>();
+            services.AddCommandLineVerb<Verb1Verb, Verb1Handler>();
+            services.AddCommandLineVerb<Verb2Verb, Verb2Handler>();
 #endif
         })
         .Build();
@@ -48,65 +49,15 @@ IHost host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
 #if (EnableSingleCommand)
-        services.AddCommandLineOptions<SimpleCommandLineOptions, SimpleCommandLineHandler>(args);
+        services.AddCommandLineOptions<SimpleOptions, SimpleHandler>(args);
 #endif
 #if (EnableCommandLineVerbs)
         services.AddCommandLineArguments(args);
-        services.AddCommandLineVerb<AddVerb, AddHandler>();
-        services.AddCommandLineVerb<CompleteVerb, CompleteHandler>();
+        services.AddCommandLineVerb<Verb1Verb, Verb1Handler>();
+        services.AddCommandLineVerb<Verb2Verb, Verb2Handler>();
 #endif
     })
     .Build();
 
 await host.RunCommandLineAsync();
-#endif
-
-#if (EnableCommandLineVerbs)
-[Verb("add", HelpText = "Add a new TODO item")]
-public class AddVerb
-{
-    [Option('t', "todo", HelpText = "The ID of the TODO", Required = true)]
-    public string TodoId { get; set; }
-}
-
-[Verb("complete", HelpText = "Mark an existing TODO item as completed")]
-public class CompleteVerb
-{
-    [Option('t', "todo", HelpText = "The ID of the TODO", Required = true)]
-    public string TodoId { get; set; }
-}
-
-public class AddHandler : ICommandLineHandler<AddVerb>
-{
-    public Task ExecuteAsync(AddVerb verb)
-    {
-        // TODO - code to add a TODO item goes here
-        throw new NotImplementedException();
-    }
-}
-
-public class CompleteHandler : ICommandLineHandler<CompleteVerb>
-{
-    public Task ExecuteAsync(CompleteVerb verb)
-    {
-        // TODO - code to mark a TODO item as complete goes here
-        throw new NotImplementedException();
-    }
-}
-#endif
-#if (EnableSingleCommand)
-public class SimpleCommandLineOptions
-{
-    [Option('p', "path", HelpText = "A simple file path string property", Required = true)]
-    public string FilePath { get; set; }
-}
-
-public class SimpleCommandLineHandler : ICommandLineHandler<SimpleCommandLineOptions>
-{
-    public async Task ExecuteAsync(SimpleCommandLineOptions verb)
-    {
-        // TODO - code to process SimpleCommandLineOptions goes here
-        throw new NotImplementedException();
-    }
-}
 #endif

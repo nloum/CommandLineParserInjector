@@ -97,6 +97,53 @@
             "datatype": "bool",
             "defaultValue": "false"
         },
+        "simpleCommand": {
+            "type": "parameter",
+            "datatype": "text",
+            "replaces": "Simple",
+            "fileRename": "Simple"
+        },
+        "simpleCommandLower": {
+            "type": "generated",
+            "generator": "casing",
+            "parameters": {
+                "source": "simpleCommand",
+                "toLower": true
+            },
+            "replaces": "simple"
+        },
+        "verb1": {
+            "type": "parameter",
+            "datatype": "text",
+            "replaces": "Flurby",
+            "fileRename": "Flurby",
+            "defaultValue": "Add"
+        },
+        "verb1Lower": {
+            "type": "generated",
+            "generator": "casing",
+            "parameters": {
+                "source": "verb1",
+                "toLower": true
+            },
+            "replaces": "flurby"
+        },
+        "verb2": {
+            "type": "parameter",
+            "datatype": "text",
+            "replaces": "Sculpt",
+            "fileRename": "Sculpt",
+            "defaultValue": "Remove"
+        },
+        "verb2Lower": {
+            "type": "generated",
+            "generator": "casing",
+            "parameters": {
+                "source": "verb2",
+                "toLower": true
+            },
+            "replaces": "sculpt"
+        },
         "TargetFramework": {
             "type": "parameter",
             "datatype": "choice",
@@ -186,6 +233,25 @@
             "primaryOutputIndexes": "0",
             "actionId": "D396686C-DE0E-4DE6-906D-291CD29FC5DE",
             "continueOnError": true
+        }
+    ],
+    "sources": [
+        {
+            "modifiers": [
+                {
+                    "condition": "(!EnableSingleCommand)",
+                    "exclude": [
+                        "SimpleHandler.cs"
+                    ]
+                },
+                {
+                    "condition": "(!EnableCommandLineVerbs)",
+                    "exclude": [
+                        "Verb1Handler.cs",
+                        "Verb2Handler.cs"
+                    ]
+                }
+            ]
         }
     ]
 }
