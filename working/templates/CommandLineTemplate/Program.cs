@@ -1,6 +1,11 @@
+#if (!EnableImplicitUsings)
 using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
+#endif
 using CommandLine;
 using CommandLineParserInjector;
+
 #if(EnableSerilog)
 using Serilog;
 
