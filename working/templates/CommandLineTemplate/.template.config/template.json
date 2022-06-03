@@ -149,6 +149,7 @@
             "datatype": "choice",
             "defaultValue": "net6.0",
             "replaces": "net6.0",
+            "allowMultipleValues": true,
             "choices": [
                 {
                     "choice": "net6.0",
@@ -239,13 +240,13 @@
         {
             "modifiers": [
                 {
-                    "condition": "(!enableSingleCommand)",
+                    "condition": "(enableSingleCommand)",
                     "exclude": [
                         "SimpleHandler.cs"
                     ]
                 },
                 {
-                    "condition": "(!enableCommandLineVerbs)",
+                    "condition": "(enableCommandLineVerbs)",
                     "exclude": [
                         "Verb1Handler.cs",
                         "Verb2Handler.cs"
