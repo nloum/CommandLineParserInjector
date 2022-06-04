@@ -314,6 +314,13 @@
                     ]
                 },
                 {
+                    "condition": "(!enableDotNetTool)",
+                    "exclude": [
+                        "appsettings.Development.json",
+                        "appsettings.json"
+                    ]
+                },
+                {
                     "condition": "(!enableVerbs || !inlineHandlers)",
                     "exclude": [
                         "VerbBase.cs"
