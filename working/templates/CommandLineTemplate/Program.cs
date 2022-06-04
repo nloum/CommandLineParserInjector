@@ -20,7 +20,9 @@ try
     IHost host = Host.CreateDefaultBuilder()
         .UseSerilog((context, services, configuration) => configuration
             .WriteTo.Console()
+#if (!enableDotNetTool)
             .ReadFrom.Configuration(context.Configuration)
+#endif
             .ReadFrom.Services(services))
         .ConfigureServices(services =>
         {
