@@ -69,10 +69,10 @@ public static class Extensions
     /// <param name="services">The dependency injection container that is having services registered in it</param>
     /// <param name="args">The command line arguments</param>
     /// <param name="parser">The command line parser to use, if specified; otherwise, uses <see cref="Parser.Default"/></param>
-    public static void AddCommandLineOptions<TCommandLineOptions>(this IServiceCollection services, string[] args, Parser? parser = null)
+    public static void AddCommandLineCommand<TCommandLineOptions>(this IServiceCollection services, string[] args, Parser? parser = null)
         where TCommandLineOptions : class
     {
-        services.AddCommandLineOptions<TCommandLineOptions>();
+        services.AddCommandLineCommand<TCommandLineOptions>();
         services.AddSingleton(parser ?? Parser.Default);
         services.AddSingleton(new CommandLineArguments(args));
     }
@@ -85,11 +85,11 @@ public static class Extensions
     /// <param name="services">The dependency injection container that is having services registered in it</param>
     /// <param name="args">The command line arguments</param>
     /// <param name="parser">The command line parser to use, if specified; otherwise, uses <see cref="Parser.Default"/></param>
-    public static void AddCommandLineOptions<TCommandLineOptions, TCommandLineHandler>(this IServiceCollection services, string[] args, Parser? parser = null)
+    public static void AddCommandLineCommand<TCommandLineOptions, TCommandLineHandler>(this IServiceCollection services, string[] args, Parser? parser = null)
         where TCommandLineOptions : class
         where TCommandLineHandler : class, ICommandLineHandler<TCommandLineOptions>
     {
-        services.AddCommandLineOptions<TCommandLineOptions>(args, parser);
+        services.AddCommandLineCommand<TCommandLineOptions>(args, parser);
         services.AddSingleton<ICommandLineHandler<TCommandLineOptions>, TCommandLineHandler>();
         services.AddSingleton<ICommandLineRunner, CommandLineRunner<TCommandLineOptions>>();
     }
@@ -101,7 +101,7 @@ public static class Extensions
     /// on all verbs. 
     /// </summary>
     /// <param name="services">The dependency injection container that is having services registered in it</param>
-    public static void AddCommandLineVerbBase<TCommandLineVerbBase>(this IServiceCollection services) where TCommandLineVerbBase : class
+    public static void AddCommandLineVerbs<TCommandLineVerbBase>(this IServiceCollection services) where TCommandLineVerbBase : class
     {
         services.AddSingleton<ICommandLineHandler<TCommandLineVerbBase>, CommandLineVerbBaseHandler<TCommandLineVerbBase>>();
         services.AddSingleton<ICommandLineRunner>(di => (CommandLineVerbBaseHandler<TCommandLineVerbBase>)di.GetRequiredService<ICommandLineHandler<TCommandLineVerbBase>>());
@@ -117,11 +117,20 @@ public static class Extensions
     }
     
     /// <summary>
+    /// Makes it so you can execute multiple command line verbs from this command line application.
+    /// </summary>
+    /// <param name="services">The dependency injection container that is having services registered in it</param>
+    public static void AddCommandLineVerbs(this IServiceCollection services)
+    {
+        services.AddCommandLineVerbs<object>();
+    }
+
+    /// <summary>
     /// Specifies the strongly-typed object type that will be used to receive command line parameters.
     /// </summary>
     /// <param name="services">The dependency injection container that is having services registered in it</param>
     /// <typeparam name="TCommandLineOptions">The strongly-typed object type that will be used to receive command line parameters</typeparam>
-    public static void AddCommandLineOptions<TCommandLineOptions>(this IServiceCollection services)
+    public static void AddCommandLineCommand<TCommandLineOptions>(this IServiceCollection services)
         where TCommandLineOptions : class
     {
         services.AddSingleton(di =>

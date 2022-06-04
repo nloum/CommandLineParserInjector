@@ -100,7 +100,7 @@ public class ExampleTests
         IHost host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
-                services.AddCommandLineOptions<SimpleCommandLineOptions>(args);
+                services.AddCommandLineCommand<SimpleCommandLineOptions>(args);
             })
             .Build();
 
@@ -131,8 +131,8 @@ public class ExampleTests
         IHost host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
-                services.AddCommandLineVerbBase<CustomVerbBase>();
-                services.AddCommandLineOptions<SimpleCommandLineOptions, SimpleCommandLineHandler>(args);
+                services.AddCommandLineVerbs<CustomVerbBase>();
+                services.AddCommandLineCommand<SimpleCommandLineOptions, SimpleCommandLineHandler>(args);
                 services.AddSingleton(test.Object);
             })
             .Build();
@@ -170,7 +170,7 @@ public class ExampleTests
                 services.AddCommandLineArguments(args);
                 services.AddCommandLineVerb<CommandLineVerb1, CommandLineHandler1>();
                 services.AddCommandLineVerb<CommandLineVerb2, CommandLineHandler2>();
-                services.AddCommandLineVerbBase<CustomVerbBase>();
+                services.AddCommandLineVerbs<CustomVerbBase>();
                 services.AddSingleton(test.Object);
             })
             .Build();

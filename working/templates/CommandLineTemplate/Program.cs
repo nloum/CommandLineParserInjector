@@ -25,13 +25,14 @@ try
         .ConfigureServices(services =>
         {
 #if (enableCommand && !inlineHandlers)
-            services.AddCommandLineOptions<SimpleCommandOptions, SimpleCommandHandler>(args);
+            services.AddCommandLineCommand<SimpleCommandOptions, SimpleCommandHandler>(args);
 #endif
 #if (enableCommand && inlineHandlers)
-            services.AddCommandLineOptions<SimpleCommandOptions>(args);
+            services.AddCommandLineCommand<SimpleCommandOptions>(args);
 #endif
 #if (enableVerbs && !inlineHandlers)
             services.AddCommandLineArguments(args);
+            services.AddCommandLineVerbs();
             services.AddCommandLineVerb<Verb1Verb, Verb1Handler>();
             services.AddCommandLineVerb<Verb2Verb, Verb2Handler>();
 #endif
@@ -76,13 +77,14 @@ IHost host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
 #if (enableCommand && !inlineHandlers)
-        services.AddCommandLineOptions<SimpleCommandOptions, SimpleCommandHandler>(args);
+        services.AddCommandLineCommand<SimpleCommandOptions, SimpleCommandHandler>(args);
 #endif
 #if (enableCommand && inlineHandlers)
-        services.AddCommandLineOptions<SimpleCommandOptions>(args);
+        services.AddCommandLineCommand<SimpleCommandOptions>(args);
 #endif
 #if (enableVerbs && !inlineHandlers)
         services.AddCommandLineArguments(args);
+        services.AddCommandLineVerbs();
         services.AddCommandLineVerb<Verb1Verb, Verb1Handler>();
         services.AddCommandLineVerb<Verb2Verb, Verb2Handler>();
 #endif
