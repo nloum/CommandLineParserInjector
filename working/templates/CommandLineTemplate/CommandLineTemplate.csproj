@@ -20,6 +20,7 @@
 <!--#if (enableDotNetTool) -->
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>botsay</ToolCommandName>
+        <PackageOutputPath>./nupkg</PackageOutputPath>
 <!--#endif -->
     </PropertyGroup>
 
