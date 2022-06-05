@@ -113,7 +113,7 @@ public static class Extensions
         services.AddSingleton<ICommandLineRunner>(di => (CommandLineVerbBaseHandler<TCommandLineVerbBase>)di.GetRequiredService<ICommandLineHandler<TCommandLineVerbBase>>());
         services.AddSingleton(di => new AnyVerb()
         {
-            Value = di.GetRequiredService<TCommandLineVerbBase>(),
+            Value = di.GetService<TCommandLineVerbBase>(),
         });
         services.AddSingleton(di =>
         {

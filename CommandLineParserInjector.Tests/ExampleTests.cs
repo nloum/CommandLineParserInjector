@@ -119,10 +119,11 @@ public class ExampleTests
         runner.Should().BeNull();
     }
     
+    [DataRow(new string[0])]
+    [DataRow(new []{"-d"})]
     [TestMethod]
-    public void SimpleCommandLineOptions_WithoutHandler_WithEmptyArgs_ShouldReturnNullCommand()
+    public void SimpleCommandLineOptions_WithoutHandler_WithInvalidArgs_ShouldReturnNullCommand(string[] args)
     {
-        var args = new string[0];
         IHost host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
@@ -179,15 +180,16 @@ public class ExampleTests
         messages[0].Should().Be("test.txt");
     }
     
+    [DataRow(new string[0])]
+    [DataRow(new []{"-d"})]
     [TestMethod]
-    public void SimpleCommandLineOptions_WithHandler_WithEmptyArgs_ShouldFailGracefully()
+    public void SimpleCommandLineOptions_WithHandler_WithInvalidArgs_ShouldFailGracefully(string[] args)
     {
         var test = new Mock<ITest>();
         var messages = new List<string>();
         test.Setup(x => x.DoSomething(It.IsAny<string>()))
             .Callback((string message) => messages.Add(message));
         
-        var args = new string[0];
         IHost host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
@@ -214,7 +216,7 @@ public class ExampleTests
     }
 
     [TestMethod]
-    public async Task CommandLineVerbs_WithBase_ShouldWork()
+    public async Task CommandLineVerbs_WithBase_WithHandlers_ShouldWork()
     {
         var test = new Mock<ITest>();
         var messages = new List<string>();
@@ -262,6 +264,49 @@ public class ExampleTests
         messages[0].Should().Be("test.txt");
     }
     
+
+    [DataRow(new string[0])]
+    [DataRow(new []{"-d"})]    [TestMethod]
+    public async Task CommandLineVerbs_WithBase_WithHandlers_WithInvalidArgs_ShouldWork(string[] args)
+    {
+        var test = new Mock<ITest>();
+        var messages = new List<string>();
+        test.Setup(x => x.DoSomething(It.IsAny<string>()))
+            .Callback((string message) => messages.Add(message));
+        
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineArguments(args);
+                services.AddCommandLineVerb<CommandLineVerb1, CommandLineHandler1>();
+                services.AddCommandLineVerb<CommandLineVerb2, CommandLineHandler2>();
+                services.AddCommandLineVerbs<CustomVerbBase>();
+                services.AddSingleton(test.Object);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var verbBase = host.Services.GetService<CustomVerbBase>();
+        verbBase.Should().BeNull();
+        
+        var options = host.Services.GetRequiredService<AnyVerb>();
+        options.Value.Should().BeNull();
+
+        var handler1 = host.Services.GetService<ICommandLineHandler<CommandLineVerb1>>();
+        handler1.Should().NotBeNull();
+
+        var handler2 = host.Services.GetService<ICommandLineHandler<CommandLineVerb2>>();
+        handler2.Should().NotBeNull();
+
+        var runner = host.Services.GetService<ICommandLineRunner>();
+        runner.Should().NotBeNull();
+
+        Action action = () => runner.RunAsync().Wait();
+        action.Should().Throw<InvalidOperationException>();
+    }
+
     [TestMethod]
     public async Task CommandLineVerbs_WithBase_WithoutHandler_ShouldWork()
     {
@@ -314,7 +359,7 @@ public class ExampleTests
     }
 
     [TestMethod]
-    public async Task CommandLineVerbs_WithoutBase_ShouldWork()
+    public async Task CommandLineVerbs_WithoutBase_WithHandlers_ShouldWork()
     {
         var test = new Mock<ITest>();
         var messages = new List<string>();
@@ -358,8 +403,51 @@ public class ExampleTests
         messages[0].Should().Be("test.txt");
     }
     
+    [DataRow(new string[0])]
+    [DataRow(new []{"-d"})]
     [TestMethod]
-    public void CommandLineVerbs_WithIncorrectBase_ShouldFail()
+    public async Task CommandLineVerbs_WithoutBase_WithHandlers_WithInvalidArgs_ShouldWork(string[] args)
+    {
+        var test = new Mock<ITest>();
+        var messages = new List<string>();
+        test.Setup(x => x.DoSomething(It.IsAny<string>()))
+            .Callback((string message) => messages.Add(message));
+        
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineArguments(args);
+                services.AddCommandLineVerb<CommandLineVerb1, CommandLineHandler1>();
+                services.AddCommandLineVerb<CommandLineVerb2, CommandLineHandler2>();
+                services.AddCommandLineVerbs();
+                services.AddSingleton(test.Object);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var verbBase = host.Services.GetService<CustomVerbBase>();
+        verbBase.Should().BeNull();
+
+        var options = host.Services.GetRequiredService<AnyVerb>();
+        options.Value.Should().BeNull();
+
+        var handler1 = host.Services.GetService<ICommandLineHandler<CommandLineVerb1>>();
+        handler1.Should().NotBeNull();
+
+        var handler2 = host.Services.GetService<ICommandLineHandler<CommandLineVerb2>>();
+        handler2.Should().NotBeNull();
+
+        var runner = host.Services.GetService<ICommandLineRunner>();
+        runner.Should().NotBeNull();
+
+        Action action = () => runner.RunAsync().Wait();
+        action.Should().Throw<InvalidOperationException>();
+    }
+
+    [TestMethod]
+    public void CommandLineVerbs_WithIncorrectBase_WithHandlers_ShouldFail()
     {
         var test = new Mock<ITest>();
         var messages = new List<string>();
@@ -395,7 +483,7 @@ public class ExampleTests
     }
 
     [TestMethod]
-    public async Task CommandLineVerbs_WithoutBase_WithoutHandler_ShouldWork()
+    public async Task CommandLineVerbs_WithoutBase_WithoutHandlers_ShouldWork()
     {
         var test = new Mock<ITest>();
         var messages = new List<string>();
@@ -444,15 +532,16 @@ public class ExampleTests
         action.Should().Throw<InvalidOperationException>();
     }
     
+    [DataRow(new string[0])]
+    [DataRow(new []{"-d"})]
     [TestMethod]
-    public async Task CommandLineVerbs_WithoutBase_WithEmptyArgs_ShouldReturnNullVerb()
+    public async Task CommandLineVerbs_WithoutBase_WithoutHandlers_WithInvalidArgs_ShouldReturnNullVerb(string[] args)
     {
         var test = new Mock<ITest>();
         var messages = new List<string>();
         test.Setup(x => x.DoSomething(It.IsAny<string>()))
             .Callback((string message) => messages.Add(message));
         
-        var args = new string[0];
         IHost host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
@@ -460,6 +549,50 @@ public class ExampleTests
                 services.AddCommandLineVerb<CommandLineVerb1>();
                 services.AddCommandLineVerb<CommandLineVerb2>();
                 services.AddCommandLineVerbs();
+                services.AddSingleton(test.Object);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var verbBase = host.Services.GetService<CustomVerbBase>();
+        verbBase.Should().BeNull();
+
+        var options = host.Services.GetRequiredService<AnyVerb>();
+        options.Value.Should().BeNull();
+
+        var handler1 = host.Services.GetService<ICommandLineHandler<CommandLineVerb1>>();
+        handler1.Should().BeNull();
+
+        var handler2 = host.Services.GetService<ICommandLineHandler<CommandLineVerb2>>();
+        handler2.Should().BeNull();
+
+        var runner = host.Services.GetService<ICommandLineRunner>();
+        runner.Should().NotBeNull();
+
+        Action action = () => runner.RunAsync().Wait();
+        action.Should().Throw<InvalidOperationException>();
+    }
+    
+    
+    [DataRow(new string[0])]
+    [DataRow(new []{"-d"})]
+    [TestMethod]
+    public async Task CommandLineVerbs_WithBase_WithoutHandlers_WithInvalidArgs_ShouldReturnNullVerb(string[] args)
+    {
+        var test = new Mock<ITest>();
+        var messages = new List<string>();
+        test.Setup(x => x.DoSomething(It.IsAny<string>()))
+            .Callback((string message) => messages.Add(message));
+        
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineArguments(args);
+                services.AddCommandLineVerb<CommandLineVerb1>();
+                services.AddCommandLineVerb<CommandLineVerb2>();
+                services.AddCommandLineVerbs<CustomVerbBase>();
                 services.AddSingleton(test.Object);
             })
             .Build();
