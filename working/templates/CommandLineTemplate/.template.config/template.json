@@ -314,7 +314,7 @@
                     ]
                 },
                 {
-                    "condition": "(!enableDotNetTool)",
+                    "condition": "(enableDotNetTool)",
                     "exclude": [
                         "appsettings.Development.json",
                         "appsettings.json"
