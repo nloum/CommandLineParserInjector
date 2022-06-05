@@ -120,6 +120,30 @@ public class ExampleTests
     }
     
     [TestMethod]
+    public void SimpleCommandLineOptions_WithoutHandler_WithEmptyArgs_ShouldReturnNullCommand()
+    {
+        var args = new string[0];
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineCommand<SimpleCommandLineOptions>(args);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var options = host.Services.GetService<SimpleCommandLineOptions>();
+        options.Should().BeNull();
+
+        var handler = host.Services.GetService<ICommandLineHandler<SimpleCommandLineOptions>>();
+        handler.Should().BeNull();
+
+        var runner = host.Services.GetService<ICommandLineRunner>();
+        runner.Should().BeNull();
+    }
+
+    [TestMethod]
     public async Task SimpleCommandLineOptions_WithHandler_ShouldWork()
     {
         var test = new Mock<ITest>();
@@ -155,6 +179,40 @@ public class ExampleTests
         messages[0].Should().Be("test.txt");
     }
     
+    [TestMethod]
+    public void SimpleCommandLineOptions_WithHandler_WithEmptyArgs_ShouldFailGracefully()
+    {
+        var test = new Mock<ITest>();
+        var messages = new List<string>();
+        test.Setup(x => x.DoSomething(It.IsAny<string>()))
+            .Callback((string message) => messages.Add(message));
+        
+        var args = new string[0];
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineVerbs<CustomVerbBase>();
+                services.AddCommandLineCommand<SimpleCommandLineOptions, SimpleCommandLineHandler>(args);
+                services.AddSingleton(test.Object);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var options = host.Services.GetService<SimpleCommandLineOptions>();
+        options.Should().BeNull();
+
+        var handler = host.Services.GetService<ICommandLineHandler<SimpleCommandLineOptions>>();
+        handler.Should().NotBeNull();
+
+        var runner = host.Services.GetService<ICommandLineRunner>();
+        runner.Should().NotBeNull();
+
+        Action action = () => host.RunCommandLineAsync().Wait();
+        action.Should().Throw<InvalidOperationException>();
+    }
+
     [TestMethod]
     public async Task CommandLineVerbs_WithBase_ShouldWork()
     {
@@ -379,6 +437,48 @@ public class ExampleTests
         // This is unlike the command style, which has no ICommandLineRunner if there's no handler.
         // Is this something we need to change?
         
+        var runner = host.Services.GetService<ICommandLineRunner>();
+        runner.Should().NotBeNull();
+
+        Action action = () => runner.RunAsync().Wait();
+        action.Should().Throw<InvalidOperationException>();
+    }
+    
+    [TestMethod]
+    public async Task CommandLineVerbs_WithoutBase_WithEmptyArgs_ShouldReturnNullVerb()
+    {
+        var test = new Mock<ITest>();
+        var messages = new List<string>();
+        test.Setup(x => x.DoSomething(It.IsAny<string>()))
+            .Callback((string message) => messages.Add(message));
+        
+        var args = new string[0];
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineArguments(args);
+                services.AddCommandLineVerb<CommandLineVerb1>();
+                services.AddCommandLineVerb<CommandLineVerb2>();
+                services.AddCommandLineVerbs();
+                services.AddSingleton(test.Object);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var verbBase = host.Services.GetService<CustomVerbBase>();
+        verbBase.Should().BeNull();
+
+        var options = host.Services.GetRequiredService<AnyVerb>();
+        options.Value.Should().BeNull();
+
+        var handler1 = host.Services.GetService<ICommandLineHandler<CommandLineVerb1>>();
+        handler1.Should().BeNull();
+
+        var handler2 = host.Services.GetService<ICommandLineHandler<CommandLineVerb2>>();
+        handler2.Should().BeNull();
+
         var runner = host.Services.GetService<ICommandLineRunner>();
         runner.Should().NotBeNull();
 

@@ -123,6 +123,12 @@ public static class Extensions
             var parser = di.GetRequiredService<Parser>();
             var result = parser.ParseArguments(args.Value, verbDescriptors);
             var verb = result.Value;
+
+            if (verb is null)
+            {
+                return null;
+            }
+            
             var stronglyTypedResult = verb as TCommandLineVerbBase;
 
             if (stronglyTypedResult is null)
@@ -141,7 +147,19 @@ public static class Extensions
     /// <param name="services">The dependency injection container that is having services registered in it</param>
     public static void AddCommandLineVerbs(this IServiceCollection services)
     {
-        services.AddCommandLineVerbs<object>();
+        services.AddSingleton<ICommandLineHandler<object>, CommandLineVerbBaseHandler<object>>();
+        services.AddSingleton<ICommandLineRunner>(di => (CommandLineVerbBaseHandler<object>)di.GetRequiredService<ICommandLineHandler<object>>());
+        services.AddSingleton(di =>
+        {
+            var verbDescriptors = di.GetRequiredService<IEnumerable<CommandLineVerbDescriptor>>().Select(x => x.Type)
+                .ToArray();
+            var args = di.GetRequiredService<CommandLineArguments>();
+            var parser = di.GetRequiredService<Parser>();
+            var result = parser.ParseArguments(args.Value, verbDescriptors);
+            var verb = result.Value;
+
+            return new AnyVerb() { Value = verb };
+        });
     }
 
     /// <summary>
@@ -152,7 +170,7 @@ public static class Extensions
     public static void AddCommandLineCommand<TCommandLineOptions>(this IServiceCollection services)
         where TCommandLineOptions : class
     {
-        services.AddSingleton(di =>
+        services.AddSingleton<TCommandLineOptions>(di =>
         {
             var args = di.GetRequiredService<CommandLineArguments>().Value;
             var parser = di.GetRequiredService<Parser>();

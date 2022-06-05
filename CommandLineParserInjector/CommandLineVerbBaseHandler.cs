@@ -28,6 +28,12 @@ public class CommandLineVerbBaseHandler<TCommandLineVerbBase> : ICommandLineHand
     {
         var verb = _services.GetRequiredService<AnyVerb>().Value;
 
+        if (verb is null)
+        {
+            _logger.LogError("The specified command line arguments were not valid");
+            throw new InvalidOperationException("The specified command line arguments were not valid");
+        }
+        
         var stronglyTypedVerb = verb as TCommandLineVerbBase;
 
         if (stronglyTypedVerb is null)
