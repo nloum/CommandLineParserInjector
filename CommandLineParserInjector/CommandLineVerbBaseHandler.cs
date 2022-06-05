@@ -26,7 +26,7 @@ public class CommandLineVerbBaseHandler<TCommandLineVerbBase> : ICommandLineHand
 
     public Task RunAsync()
     {
-        var verb = _services.GetRequiredService<TCommandLineVerbBase>();
+        var verb = (TCommandLineVerbBase)_services.GetRequiredService<AnyVerb>().Value;
         return ExecuteAsync(verb);
     }
 
@@ -53,12 +53,16 @@ public class CommandLineVerbBaseHandler<TCommandLineVerbBase> : ICommandLineHand
                 {
                     _logger.LogError("No command line verb handler specified for verb. Try using AddCommandLineVerb<{VerbType}, MyCommandLineVerbHandler> instead of AddCommandLineVerb<>.",
                         verb.GetType().GetCSharpTypeName());
+                    throw new InvalidOperationException(
+                        $"No command line verb handler specified for verb. Try using AddCommandLineVerb<{verb.GetType().GetCSharpTypeName()}, MyCommandLineVerbHandler> instead of AddCommandLineVerb<>.");
                     return Task.CompletedTask;
                 }
             }
         }
-        
+
         _logger.LogError("Unregistered verb type. Try using AddCommandLineVerb<{VerbType}, MyCommandLineVerbHandler>.", verb.GetType().GetCSharpTypeName());
-        return Task.CompletedTask;
+        
+        throw new InvalidOperationException(
+            $"Unregistered verb type. Try using AddCommandLineVerb<{verb.GetType().GetCSharpTypeName()}, MyCommandLineVerbHandler>.");
     }
 }

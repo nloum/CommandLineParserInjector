@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,12 @@ public static class Extensions
     /// </summary>
     public static Task RunCommandLineAsync(this IHost host)
     {
-        var runner = host.Services.GetRequiredService<ICommandLineRunner>();
+        var runner = host.Services.GetService<ICommandLineRunner>();
+        if (runner is null)
+        {
+            throw new InvalidOperationException(
+                "Cannot run command line when there are no command line handlers specified.");
+        }
         return runner.RunAsync();
     }
 
@@ -105,6 +111,10 @@ public static class Extensions
     {
         services.AddSingleton<ICommandLineHandler<TCommandLineVerbBase>, CommandLineVerbBaseHandler<TCommandLineVerbBase>>();
         services.AddSingleton<ICommandLineRunner>(di => (CommandLineVerbBaseHandler<TCommandLineVerbBase>)di.GetRequiredService<ICommandLineHandler<TCommandLineVerbBase>>());
+        services.AddSingleton(di => new AnyVerb()
+        {
+            Value = di.GetRequiredService<TCommandLineVerbBase>(),
+        });
         services.AddSingleton(di =>
         {
             var verbDescriptors = di.GetRequiredService<IEnumerable<CommandLineVerbDescriptor>>().Select(x => x.Type)

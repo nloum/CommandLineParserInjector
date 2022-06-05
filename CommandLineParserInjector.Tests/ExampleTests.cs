@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandLine;
@@ -94,7 +95,7 @@ public class SimpleCommandLineHandler : ICommandLineHandler<SimpleCommandLineOpt
 public class ExampleTests
 {
     [TestMethod]
-    public async Task SimpleCommandLineOptions_WithoutHandler_ShouldWork()
+    public void SimpleCommandLineOptions_WithoutHandler_ShouldWork()
     {
         var args = new[]{"-p", "test.txt"};
         IHost host = Host.CreateDefaultBuilder()
@@ -115,8 +116,6 @@ public class ExampleTests
 
         var runner = host.Services.GetService<ICommandLineRunner>();
         runner.Should().BeNull();
-
-        await host.RunCommandLineAsync();
     }
     
     [TestMethod]
@@ -156,7 +155,7 @@ public class ExampleTests
     }
     
     [TestMethod]
-    public async Task CommandLineVerbs_ShouldWork()
+    public async Task CommandLineVerbs_WithBase_ShouldWork()
     {
         var test = new Mock<ITest>();
         var messages = new List<string>();
@@ -178,9 +177,16 @@ public class ExampleTests
         var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
         cliArgs.Value.Should().BeEquivalentTo(args);
         
-        var options = host.Services.GetRequiredService<CustomVerbBase>();
-        options.FilePath.Should().Be("test.txt");
-        (options is CommandLineVerb1).Should().BeTrue();
+        var verbBase = host.Services.GetRequiredService<CustomVerbBase>();
+        verbBase.FilePath.Should().Be("test.txt");
+        (verbBase is CommandLineVerb1).Should().BeTrue();
+        
+        var options = host.Services.GetRequiredService<AnyVerb>();
+        options.Value.Should().NotBeNull();
+        var value = options.Value as CustomVerbBase;
+        value.Should().NotBeNull();
+        value.FilePath.Should().Be("test.txt");
+        (value is CommandLineVerb1).Should().BeTrue();
 
         var handler1 = host.Services.GetService<ICommandLineHandler<CommandLineVerb1>>();
         handler1.Should().NotBeNull();
@@ -195,5 +201,151 @@ public class ExampleTests
 
         messages.Count.Should().Be(1);
         messages[0].Should().Be("test.txt");
+    }
+    
+    [TestMethod]
+    public async Task CommandLineVerbs_WithBase_WithoutHandler_ShouldWork()
+    {
+        var test = new Mock<ITest>();
+        var messages = new List<string>();
+        test.Setup(x => x.DoSomething(It.IsAny<string>()))
+            .Callback((string message) => messages.Add(message));
+        
+        var args = new[]{"verb1", "-i", "test.txt"};
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineArguments(args);
+                services.AddCommandLineVerb<CommandLineVerb1>();
+                services.AddCommandLineVerb<CommandLineVerb2>();
+                services.AddCommandLineVerbs<CustomVerbBase>();
+                services.AddSingleton(test.Object);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var verbBase = host.Services.GetRequiredService<CustomVerbBase>();
+        verbBase.FilePath.Should().Be("test.txt");
+        (verbBase is CommandLineVerb1).Should().BeTrue();
+        
+        var options = host.Services.GetRequiredService<AnyVerb>();
+        options.Value.Should().NotBeNull();
+        var value = options.Value as CustomVerbBase;
+        value.Should().NotBeNull();
+        value.FilePath.Should().Be("test.txt");
+        (value is CommandLineVerb1).Should().BeTrue();
+
+        var handler1 = host.Services.GetService<ICommandLineHandler<CommandLineVerb1>>();
+        handler1.Should().BeNull();
+
+        var handler2 = host.Services.GetService<ICommandLineHandler<CommandLineVerb2>>();
+        handler2.Should().BeNull();
+
+        // TODO - right now AddCommandLineVerbs<> ALWAYS registers an ICommandLineRunner, which throws if there are no handlers.
+        // This is unlike the command style, which has no ICommandLineRunner if there's no handler.
+        // Is this something we need to change?
+        
+        var runner = host.Services.GetService<ICommandLineRunner>();
+        runner.Should().NotBeNull();
+
+        Action action = () => host.RunCommandLineAsync().Wait();
+        action.Should().Throw<InvalidOperationException>();
+    }
+
+    [TestMethod]
+    public async Task CommandLineVerbs_WithoutBase_ShouldWork()
+    {
+        var test = new Mock<ITest>();
+        var messages = new List<string>();
+        test.Setup(x => x.DoSomething(It.IsAny<string>()))
+            .Callback((string message) => messages.Add(message));
+        
+        var args = new[]{"verb1", "-i", "test.txt"};
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineArguments(args);
+                services.AddCommandLineVerb<CommandLineVerb1, CommandLineHandler1>();
+                services.AddCommandLineVerb<CommandLineVerb2, CommandLineHandler2>();
+                services.AddCommandLineVerbs();
+                services.AddSingleton(test.Object);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var verbBase = host.Services.GetService<CustomVerbBase>();
+        verbBase.Should().BeNull();
+
+        var options = host.Services.GetRequiredService<AnyVerb>();
+        options.Value.Should().NotBeNull();
+        var value = options.Value as CustomVerbBase;
+        value.Should().NotBeNull();
+        value.FilePath.Should().Be("test.txt");
+        (value is CommandLineVerb1).Should().BeTrue();
+
+        var handler1 = host.Services.GetService<ICommandLineHandler<CommandLineVerb1>>();
+        handler1.Should().NotBeNull();
+
+        var handler2 = host.Services.GetService<ICommandLineHandler<CommandLineVerb2>>();
+        handler2.Should().NotBeNull();
+
+        await host.RunCommandLineAsync();
+
+        messages.Count.Should().Be(1);
+        messages[0].Should().Be("test.txt");
+    }
+    
+    [TestMethod]
+    public async Task CommandLineVerbs_WithoutBase_WithoutHandler_ShouldWork()
+    {
+        var test = new Mock<ITest>();
+        var messages = new List<string>();
+        test.Setup(x => x.DoSomething(It.IsAny<string>()))
+            .Callback((string message) => messages.Add(message));
+        
+        var args = new[]{"verb1", "-i", "test.txt"};
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineArguments(args);
+                services.AddCommandLineVerb<CommandLineVerb1>();
+                services.AddCommandLineVerb<CommandLineVerb2>();
+                services.AddCommandLineVerbs();
+                services.AddSingleton(test.Object);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var verbBase = host.Services.GetService<CustomVerbBase>();
+        verbBase.Should().BeNull();
+
+        var options = host.Services.GetRequiredService<AnyVerb>();
+        options.Value.Should().NotBeNull();
+        var value = options.Value as CustomVerbBase;
+        value.Should().NotBeNull();
+        value.FilePath.Should().Be("test.txt");
+        (value is CommandLineVerb1).Should().BeTrue();
+
+        var handler1 = host.Services.GetService<ICommandLineHandler<CommandLineVerb1>>();
+        handler1.Should().BeNull();
+
+        var handler2 = host.Services.GetService<ICommandLineHandler<CommandLineVerb2>>();
+        handler2.Should().BeNull();
+
+        // TODO - right now AddCommandLineVerbs ALWAYS registers an ICommandLineRunner, which throws if there are no handlers.
+        // This is unlike the command style, which has no ICommandLineRunner if there's no handler.
+        // Is this something we need to change?
+        
+        var runner = host.Services.GetService<ICommandLineRunner>();
+        runner.Should().NotBeNull();
+
+        Action action = () => runner.RunAsync().Wait();
+        action.Should().Throw<InvalidOperationException>();
     }
 }
