@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using CommandLine;
 using FluentAssertions;
@@ -299,6 +300,42 @@ public class ExampleTests
         messages[0].Should().Be("test.txt");
     }
     
+    [TestMethod]
+    public void CommandLineVerbs_WithIncorrectBase_ShouldFail()
+    {
+        var test = new Mock<ITest>();
+        var messages = new List<string>();
+        test.Setup(x => x.DoSomething(It.IsAny<string>()))
+            .Callback((string message) => messages.Add(message));
+        
+        var args = new[]{"verb1", "-i", "test.txt"};
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineArguments(args);
+                services.AddCommandLineVerb<CommandLineVerb1, CommandLineHandler1>();
+                services.AddCommandLineVerb<CommandLineVerb2, CommandLineHandler2>();
+                services.AddCommandLineVerbs<IPAddress>();
+                services.AddSingleton(test.Object);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var handler1 = host.Services.GetService<ICommandLineHandler<CommandLineVerb1>>();
+        handler1.Should().NotBeNull();
+
+        var handler2 = host.Services.GetService<ICommandLineHandler<CommandLineVerb2>>();
+        handler2.Should().NotBeNull();
+
+        var runner = host.Services.GetService<ICommandLineRunner>();
+        runner.Should().NotBeNull();
+
+        var action = () => host.RunCommandLineAsync().Wait();
+        action.Should().Throw<InvalidOperationException>();
+    }
+
     [TestMethod]
     public async Task CommandLineVerbs_WithoutBase_WithoutHandler_ShouldWork()
     {

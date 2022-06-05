@@ -122,7 +122,16 @@ public static class Extensions
             var args = di.GetRequiredService<CommandLineArguments>();
             var parser = di.GetRequiredService<Parser>();
             var result = parser.ParseArguments(args.Value, verbDescriptors);
-            return (TCommandLineVerbBase) result.Value;
+            var verb = result.Value;
+            var stronglyTypedResult = verb as TCommandLineVerbBase;
+
+            if (stronglyTypedResult is null)
+            {
+                throw new InvalidOperationException(
+                    $"The verb {verb.GetType().GetCSharpTypeName()} is not a {typeof(TCommandLineVerbBase).GetCSharpTypeName()}");
+            }
+
+            return stronglyTypedResult;
         });
     }
     

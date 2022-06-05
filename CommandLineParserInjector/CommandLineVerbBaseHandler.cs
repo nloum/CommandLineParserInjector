@@ -26,8 +26,20 @@ public class CommandLineVerbBaseHandler<TCommandLineVerbBase> : ICommandLineHand
 
     public Task RunAsync()
     {
-        var verb = (TCommandLineVerbBase)_services.GetRequiredService<AnyVerb>().Value;
-        return ExecuteAsync(verb);
+        var verb = _services.GetRequiredService<AnyVerb>().Value;
+
+        var stronglyTypedVerb = verb as TCommandLineVerbBase;
+
+        if (stronglyTypedVerb is null)
+        {
+            _logger.LogError("The verb {VerbType} is not a {ExpectedVerbType}", 
+                verb.GetType().GetCSharpTypeName(),
+                typeof(TCommandLineVerbBase).GetCSharpTypeName());
+            throw new InvalidOperationException(
+                $"The verb {verb.GetType().GetCSharpTypeName()} is not a {typeof(TCommandLineVerbBase).GetCSharpTypeName()}");
+        }
+        
+        return ExecuteAsync(stronglyTypedVerb);
     }
 
     public Task ExecuteAsync(TCommandLineVerbBase verb)
@@ -44,6 +56,8 @@ public class CommandLineVerbBaseHandler<TCommandLineVerbBase> : ICommandLineHand
                     {
                         _logger.LogError("Failed to find the ExecuteAsync method on command line verb handler {Type}", 
                             verbDescriptor.ServiceType.GetCSharpTypeName());
+                        throw new InvalidOperationException(
+                            $"Failed to find the ExecuteAsync method on command line verb handler {verbDescriptor.ServiceType.GetCSharpTypeName()}");
                         return Task.CompletedTask;
                     }
                     var task = (Task)executeAsync.Invoke(service, new object[] { verb });
