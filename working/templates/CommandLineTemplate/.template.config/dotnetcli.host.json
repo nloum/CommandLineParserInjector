@@ -44,6 +44,10 @@
             "longName": "implicitUsings",
             "shortName": "iu"
         },
+        "enableTerminalGui": {
+            "longName": "terminalGui",
+            "shortName": "tg"
+        },
         "inlineHandlers": {
             "longName": "inlineHandlers",
             "shortName": "ih"
