@@ -27,7 +27,7 @@ public class SimpleHandler : ICommandLineHandler<SimpleOptions>
 		var top = Application.Top;
 
 		// Creates the top-level window to show
-		var win = new Window("MyApp")
+		var win = new Window("CommandLineTemplate")
 		{
 			X = 0,
 			Y = 1, // Leave one row for the toplevel menu
