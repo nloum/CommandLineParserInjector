@@ -33,5 +33,8 @@
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
 <!--#endif -->
+<!--#if (enableTerminalGui) -->
+        <PackageReference Include="Terminal.Gui" Version="1.6.4" />
+<!--#endif -->
     </ItemGroup>
 </Project>

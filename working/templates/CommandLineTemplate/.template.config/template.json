@@ -148,6 +148,11 @@
             "datatype": "bool",
             "defaultValue": "false"
         },
+        "enableTerminalGui": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false"
+        },
 
         "simpleCommand": {
             "type": "parameter",
