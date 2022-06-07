@@ -1,7 +1,7 @@
 #if (!enableImplicitUsings)
 using System;
-using Microsoft.Extensions.Hosting;
 #endif
+using Microsoft.Extensions.Hosting;
 using CommandLineParserInjector;
 using CommandLineTemplate;
 #if (inlineHandlers)
