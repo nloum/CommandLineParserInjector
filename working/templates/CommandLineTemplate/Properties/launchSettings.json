@@ -1,7 +1,7 @@
 ﻿{
   //#if(enableVerbs)
   "profiles": {
-    "CommandLineParserInjectorTemplate verb1": {
+    "CommandLineTemplate verb1": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "commandLineArgs": "verb1 -p test.txt",
@@ -21,7 +21,7 @@
   //#endif
   //#if(enableCommand)
   "profiles": {
-    "CommandLineParserInjectorTemplate": {
+    "CommandLineTemplate": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "commandLineArgs": "-p test.txt",
