@@ -9,7 +9,7 @@
         "DOTNET_ENVIRONMENT": "Development"
       }
     },
-    "CommandLineParserInjectorTemplate verb2": {
+    "CommandLineTemplate verb2": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "commandLineArgs": "verb2 -p test.txt",
