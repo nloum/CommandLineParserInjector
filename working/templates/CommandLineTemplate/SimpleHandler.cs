@@ -11,15 +11,9 @@ using NStack;
 
 namespace CommandLineTemplate;
 
-public class SimpleOptions
-{
-    [Option('p', "path", HelpText = "A file path", Required = true)]
-    public string Path { get; set; }
-}
-
 public class SimpleHandler : ICommandLineHandler<SimpleOptions>
 {
-    public async Task ExecuteAsync(SimpleOptions verb)
+    public async Task ExecuteAsync(SimpleOptions options)
     {
         // TODO - add code here
 #if (enableTerminalGui)

@@ -308,6 +308,7 @@
                 {
                     "condition": "(!enableCommand)",
                     "exclude": [
+                        "SimpleHandler.cs",
                         "SimpleOptions.cs"
                     ]
                 },
