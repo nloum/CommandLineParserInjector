@@ -72,6 +72,28 @@ public class CommandLineHandler2 : ICommandLineHandler<CommandLineVerb2>
     }
 }
 
+public class CommandLineHandler1And2 : ICommandLineHandler<CommandLineVerb1>, ICommandLineHandler<CommandLineVerb2>
+{
+    private readonly ITest _test;
+
+    public CommandLineHandler1And2(ITest test)
+    {
+        _test = test;
+    }
+
+    public Task ExecuteAsync(CommandLineVerb1 verb)
+    {
+        _test.DoSomething("Verb1");
+        return Task.CompletedTask;
+    }
+    
+    public Task ExecuteAsync(CommandLineVerb2 verb)
+    {
+        _test.DoSomething("Verb2");
+        return Task.CompletedTask;
+    }
+}
+
 public interface ITest
 {
     void DoSomething(string message);
@@ -95,6 +117,45 @@ public class SimpleCommandLineHandler : ICommandLineHandler<SimpleCommandLineOpt
 [TestClass]
 public class ExampleTests
 {
+    [DataRow(new[]{"verb1", "-i", "test.txt"}, "Verb1")]
+    [DataRow(new[]{"verb2", "-o", "test.txt"}, "Verb2")]
+    [TestMethod]
+    public async Task SingleClassImplementingMultipleVerbs_ShouldWork(string[] args, string expectedMessage)
+    {
+        var test = new Mock<ITest>();
+        var messages = new List<string>();
+        test.Setup(x => x.DoSomething(It.IsAny<string>()))
+            .Callback((string message) => messages.Add(message));
+        
+        IHost host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                services.AddCommandLineArguments(args);
+                services.AddCommandLineVerb<CommandLineVerb1, CommandLineHandler1And2>();
+                services.AddCommandLineVerb<CommandLineVerb2, CommandLineHandler1And2>();
+                services.AddCommandLineVerbs();
+                services.AddSingleton(test.Object);
+            })
+            .Build();
+
+        var cliArgs = host.Services.GetRequiredService<CommandLineArguments>();
+        cliArgs.Value.Should().BeEquivalentTo(args);
+        
+        var verbBase = host.Services.GetService<CustomVerbBase>();
+        verbBase.Should().BeNull();
+
+        var handler1 = host.Services.GetService<ICommandLineHandler<CommandLineVerb1>>();
+        handler1.Should().NotBeNull();
+
+        var handler2 = host.Services.GetService<ICommandLineHandler<CommandLineVerb2>>();
+        handler2.Should().NotBeNull();
+
+        await host.RunCommandLineAsync();
+
+        messages.Count.Should().Be(1);
+        messages[0].Should().Be(expectedMessage);
+    }
+    
     [TestMethod]
     public void SimpleCommandLineOptions_WithoutHandler_ShouldWork()
     {

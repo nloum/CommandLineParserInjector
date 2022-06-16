@@ -57,7 +57,27 @@ public class CommandLineVerbBaseHandler<TCommandLineVerbBase> : ICommandLineHand
                 if (verbDescriptor.ServiceType is not null)
                 {
                     var service = _services.GetRequiredService(verbDescriptor.ServiceType);
-                    var executeAsync = service.GetType().GetMethod("ExecuteAsync");
+                    var executeAsync = service.GetType().GetMethods()
+                        .FirstOrDefault(method =>
+                        {
+                            if (method.Name != "ExecuteAsync")
+                            {
+                                return false;
+                            }
+
+                            var parameters = method.GetParameters();
+                            if (parameters.Length != 1)
+                            {
+                                return false;
+                            }
+
+                            if (parameters[0].ParameterType != verbDescriptor.Type)
+                            {
+                                return false;
+                            }
+
+                            return true;
+                        });
                     if (executeAsync is null)
                     {
                         _logger.LogError("Failed to find the ExecuteAsync method on command line verb handler {Type}", 
