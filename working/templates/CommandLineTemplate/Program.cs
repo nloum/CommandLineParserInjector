@@ -3,7 +3,9 @@ using System;
 #endif
 using Microsoft.Extensions.Hosting;
 using CommandLineParserInjector;
+#if (!enableEmpty)
 using CommandLineTemplate;
+#endif
 #if (inlineHandlers)
 using Microsoft.Extensions.DependencyInjection;
 #endif
