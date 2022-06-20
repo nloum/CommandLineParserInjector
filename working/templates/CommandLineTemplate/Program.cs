@@ -55,7 +55,7 @@ try
     await host.RunCommandLineAsync();
 #endif
 #if(inlineHandlers && enableCommand)
-    var options = host.Services.GetRequiredService<SimpleCommandOptions>();
+    var options = host.Services.GetRequiredService<SimpleOptions>();
     // TODO - add code here
 #if (enableTerminalGui)
 	Application.Init();
@@ -329,7 +329,7 @@ IHost host = Host.CreateDefaultBuilder()
 await host.RunCommandLineAsync();
 #endif
 #if(inlineHandlers && enableCommand)
-var options = host.Services.GetRequiredService<SimpleCommandOptions>();
+var options = host.Services.GetRequiredService<SimpleOptions>();
 // TODO - add code here
 #if (enableTerminalGui)
 Application.Init();
