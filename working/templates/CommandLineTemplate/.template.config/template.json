@@ -93,8 +93,12 @@
         "commandLineMode": {
             "type": "parameter",
             "datatype": "choice",
-            "defaultValue": "noverbs",
+            "defaultValue": "empty",
             "choices": [
+                {
+                    "choice": "empty",
+                    "description": "Single command"
+                },
                 {
                     "choice": "command",
                     "description": "Single command"
@@ -105,13 +109,17 @@
                 }
             ]
         },
-        "enableVerbs": {
+        "enableEmpty": {
             "type": "computed",
-            "value": "(commandLineMode == \"verbs\")"
+            "value": "(commandLineMode == \"empty\")"
         },
         "enableCommand": {
             "type": "computed",
             "value": "(commandLineMode == \"command\")"
+        },
+        "enableVerbs": {
+            "type": "computed",
+            "value": "(commandLineMode == \"verbs\")"
         },
 
         "inlineHandlers": {
