@@ -6,7 +6,7 @@
         "Console"
     ],
     "identity": "CommandLineTemplate",
-    "name": "Command Line Application",
+    "name": "CommandLineParser Application",
     "shortName": "cli",
     "sourceName": "CommandLineTemplate",
     "preferNameDirectory": true,
@@ -97,7 +97,7 @@
             "choices": [
                 {
                     "choice": "empty",
-                    "description": "Single command"
+                    "description": "Empty"
                 },
                 {
                     "choice": "command",
